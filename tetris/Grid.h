@@ -9,6 +9,7 @@ public:
 	Grid();
 
 	void setGrid(Vector2<int> pos);
+	bool checkGrid(Vector2<int> pos);
 	void printGrid();
 
 private:

@@ -26,6 +26,7 @@ private:
 	Game();
 	~Game();
 
+	Grid* grid;
 	PieceManager* pieceManager;
 	
 	//Load the game's textures

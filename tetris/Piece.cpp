@@ -1,7 +1,7 @@
 #include "Piece.h"
 
-Piece::Piece(Shape s, Vector2<int> _pos)
-	: shape(s), pos(_pos)
+Piece::Piece(Shape s, Vector2<int> _pos, Grid* _grid)
+	: shape(s), pos(_pos), grid(_grid)
 {
 	switch (s)
 	{
@@ -25,9 +25,9 @@ void Piece::render()
 	}
 }
 
-void Piece::fall(int frames)
+void Piece::fall()
 {
-	if (frames % 50 == 0)
+	if (!checkColPoints(GRID_SIZE))
 		pos.y += GRID_SIZE;
 }
 
@@ -43,18 +43,33 @@ SDL_Rect Piece::getCollider(int i)
 
 void Piece::setColPoints()
 {
-	Grid grid;
-
 	for (Uint32 i = 0; i < collider->get().size(); i++)
 	{
 		for (int w = 0; w < getCollider(i).w / GRID_SIZE; w++)
 		{
 			for (int h = 0; h < getCollider(i).h / GRID_SIZE; h++)
 			{
-				grid.setGrid(Vector2<int>(getCollider(i).x + (w*GRID_SIZE), getCollider(i).y + (h*GRID_SIZE)));
+				grid->setGrid(Vector2<int>(getCollider(i).x + (w*GRID_SIZE), getCollider(i).y + (h*GRID_SIZE)));
 			}
 		}
 	}
 
-	grid.printGrid();
+	grid->printGrid();
+}
+
+bool Piece::checkColPoints(int yOffset)
+{
+	for (Uint32 i = 0; i < collider->get().size(); i++)
+	{
+		for (int w = 0; w < getCollider(i).w / GRID_SIZE; w++)
+		{
+			for (int h = 0; h < getCollider(i).h / GRID_SIZE; h++)
+			{
+				if (grid->checkGrid(Vector2<int>(getCollider(i).x + (w*GRID_SIZE), getCollider(i).y + (h*GRID_SIZE) + yOffset)))
+					return true;
+			}
+		}
+	}
+
+	return false;
 }

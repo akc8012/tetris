@@ -24,10 +24,46 @@ class LCollider : public Collider
 public:
 	LCollider()
 	{
-		SDL_Rect steve = { 0, 0, GRID_SIZE * 3, GRID_SIZE };
-		SDL_Rect meme = { 0, GRID_SIZE, GRID_SIZE, GRID_SIZE };
-		colliders.push_back(steve);
-		colliders.push_back(meme);
+		rotate(DOWN);
+	}
+
+	void rotate(int dir)
+	{
+		colliders.clear();
+
+		SDL_Rect rect0;
+		SDL_Rect rect1;
+		
+		switch (dir)
+		{
+		case RIGHT:
+			rect0 = { GRID_SIZE, 0, GRID_SIZE, GRID_SIZE * 3 };
+			rect1 = { GRID_SIZE * 2, GRID_SIZE * 2, GRID_SIZE, GRID_SIZE };
+			colliders.push_back(rect0);
+			colliders.push_back(rect1);
+			break;
+
+		case DOWN:
+			rect0 = { 0, GRID_SIZE, GRID_SIZE * 3, GRID_SIZE };
+			rect1 = { 0, GRID_SIZE * 2, GRID_SIZE, GRID_SIZE };
+			colliders.push_back(rect0);
+			colliders.push_back(rect1);
+			break;
+
+		case LEFT:
+			rect0 = { GRID_SIZE, 0, GRID_SIZE, GRID_SIZE * 3 };
+			rect1 = { 0, 0, GRID_SIZE, GRID_SIZE };
+			colliders.push_back(rect0);
+			colliders.push_back(rect1);
+			break;
+
+		case UP:
+			rect0 = { 0, GRID_SIZE, GRID_SIZE * 3, GRID_SIZE };
+			rect1 = { GRID_SIZE * 2, 0, GRID_SIZE, GRID_SIZE };
+			colliders.push_back(rect0);
+			colliders.push_back(rect1);
+			break;
+		}
 	}
 };
 
@@ -39,4 +75,6 @@ public:
 		SDL_Rect meme = { 0, 0, GRID_SIZE * 2, GRID_SIZE * 2 };
 		colliders.push_back(meme);
 	}
+
+	void rotate(int dir) { }
 };

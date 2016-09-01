@@ -84,9 +84,8 @@ bool Game::loadMedia()
 
 void Game::init()
 {
-	//piece = new Piece(Vector2<int>(96+32, 96));
-	//piece2 = new Piece(Vector2<int>(96, 480));
-	pieceManager = new PieceManager();
+	grid = new Grid();
+	pieceManager = new PieceManager(grid);
 }
 
 void Game::close()

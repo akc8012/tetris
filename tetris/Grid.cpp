@@ -10,6 +10,11 @@ void Grid::setGrid(Vector2<int> pos)
 	GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2] = true;
 }
 
+bool Grid::checkGrid(Vector2<int> pos)
+{
+	return GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2];
+}
+
 void Grid::printGrid()
 {	
 	for (int x = 64; x < GRID_LENGTH; x += GRID_SIZE)

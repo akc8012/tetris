@@ -1,16 +1,19 @@
 #include "Piece.h"
 
-Piece::Piece(Shape s, Vector2<int> _pos, Grid* _grid)
-	: shape(s), pos(_pos), grid(_grid)
+Piece::Piece(Shape s, LTexture* t, Vector2<int> _pos, Grid* _grid)
+	: texture(t), shape(s), pos(_pos), grid(_grid)
 {
+	active = true;
+	rotation = DOWN;
+	
 	switch (s)
 	{
 	case L:
-		collider = new LCollider();
+		collider = new LCollider(&drawOff);
 		break;
 
 	case O:
-		collider = new OCollider();
+		collider = new OCollider(&drawOff);
 		break;
 	}
 }
@@ -23,12 +26,25 @@ void Piece::render()
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 255, 255);
 		SDL_RenderFillRect(gRenderer, &fillRect);
 	}
+
+	if (texture != NULL)
+		texture->render(pos.x+drawOff.x+rotOff[rotation].x, pos.y+drawOff.y+rotOff[rotation].y, 0, ((rotation-1)%4)*90);
 }
 
-void Piece::fall()
+bool Piece::fall()
 {
-	if (!checkColPoints(GRID_SIZE))
+	bool colliding = checkColPoints(GRID_SIZE);
+
+	if (!colliding)
 		pos.y += GRID_SIZE;
+
+	return colliding;
+}
+
+void Piece::rotate(int dir)
+{
+	rotation = dir;
+	collider->rotate(dir, &drawOff);
 }
 
 SDL_Rect Piece::getCollider(int i)

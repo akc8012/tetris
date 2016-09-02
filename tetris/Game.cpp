@@ -10,6 +10,12 @@ Game::~Game()
 	
 }
 
+void Game::init()
+{
+	grid = new Grid();
+	pieceManager = new PieceManager(grid);
+}
+
 bool Game::loadMedia()
 {
 	if (!gDotTexture.loadFromFile("media/pacSheet.png"))
@@ -79,13 +85,9 @@ bool Game::loadMedia()
 		return false;
 	}
 
-	return true;
-}
+	pieceManager->loadMedia();
 
-void Game::init()
-{
-	grid = new Grid();
-	pieceManager = new PieceManager(grid);
+	return true;
 }
 
 void Game::close()

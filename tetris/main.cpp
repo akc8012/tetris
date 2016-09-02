@@ -101,6 +101,8 @@ int main(int argc, char* args[])
 		return 0;
 	}
 
+	Game::game()->init();
+
 	//Load media
 	if (!Game::game()->loadMedia())
 	{
@@ -110,7 +112,6 @@ int main(int argc, char* args[])
 		return 0;
 	}
 
-	Game::game()->init();
 	Game::game()->run();
 
 	close();

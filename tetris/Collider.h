@@ -13,7 +13,7 @@ public:
 		return colliders;
 	}
 
-	virtual void rotate(int dir) { }
+	virtual void rotate(int dir, Vector2<int>* drawOff = NULL) { }
 
 protected:
 	std::vector<SDL_Rect> colliders;
@@ -22,59 +22,23 @@ protected:
 class LCollider : public Collider
 {
 public:
-	LCollider()
+	LCollider(Vector2<int>* drawOff)
 	{
-		rotate(DOWN);
+		rotate(DOWN, drawOff);
 	}
 
-	void rotate(int dir)
-	{
-		colliders.clear();
-
-		SDL_Rect rect0;
-		SDL_Rect rect1;
-		
-		switch (dir)
-		{
-		case RIGHT:
-			rect0 = { GRID_SIZE, 0, GRID_SIZE, GRID_SIZE * 3 };
-			rect1 = { GRID_SIZE * 2, GRID_SIZE * 2, GRID_SIZE, GRID_SIZE };
-			colliders.push_back(rect0);
-			colliders.push_back(rect1);
-			break;
-
-		case DOWN:
-			rect0 = { 0, GRID_SIZE, GRID_SIZE * 3, GRID_SIZE };
-			rect1 = { 0, GRID_SIZE * 2, GRID_SIZE, GRID_SIZE };
-			colliders.push_back(rect0);
-			colliders.push_back(rect1);
-			break;
-
-		case LEFT:
-			rect0 = { GRID_SIZE, 0, GRID_SIZE, GRID_SIZE * 3 };
-			rect1 = { 0, 0, GRID_SIZE, GRID_SIZE };
-			colliders.push_back(rect0);
-			colliders.push_back(rect1);
-			break;
-
-		case UP:
-			rect0 = { 0, GRID_SIZE, GRID_SIZE * 3, GRID_SIZE };
-			rect1 = { GRID_SIZE * 2, 0, GRID_SIZE, GRID_SIZE };
-			colliders.push_back(rect0);
-			colliders.push_back(rect1);
-			break;
-		}
-	}
+	void rotate(int dir, Vector2<int>* drawOff = NULL);
 };
 
 class OCollider : public Collider
 {
 public:
-	OCollider()
+	OCollider(Vector2<int>* drawOff)
 	{
-		SDL_Rect meme = { 0, 0, GRID_SIZE * 2, GRID_SIZE * 2 };
+		SDL_Rect meme = { GRID_SIZE, GRID_SIZE, GRID_SIZE * 2, GRID_SIZE * 2 };
 		colliders.push_back(meme);
+		*drawOff = Vector2<int>(32, 32);
 	}
 
-	void rotate(int dir) { }
+	void rotate(int dir, Vector2<int>* drawOff = NULL) { }
 };

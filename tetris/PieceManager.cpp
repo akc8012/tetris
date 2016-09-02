@@ -6,9 +6,7 @@ PieceManager::PieceManager(Grid* _grid) : grid(_grid)
 
 	spawnPiece();
 
-	dir = DOWN;
 	pressed = false;
-	//pieces[1].setColPoints();
 }
 
 void PieceManager::loadMedia()
@@ -23,20 +21,41 @@ void PieceManager::update(int frames)
 
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 && !pressed)
 	{
-		dir += 1;
-		dir %= 4;
+		pieces[active].move(1);
 		pressed = true;
-		pieces[active].rotate(dir);
 	}
-	if (currentKeyStates[SDL_SCANCODE_RIGHT] == 0) pressed = false;
-
-	if (frames % 50 == 0)
+	if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 && !pressed)
 	{
-		if (pieces[active].active && pieces[active].fall())
+		pieces[active].move(-1);
+		pressed = true;
+	}
+	if (currentKeyStates[SDL_SCANCODE_X] != 0 && !pressed)
+	{
+		pieces[active].rotate(1);
+		pressed = true;
+	}
+	if (currentKeyStates[SDL_SCANCODE_Z] != 0 && !pressed)
+	{
+		pieces[active].rotate(-1);
+		pressed = true;
+	}
+	if (currentKeyStates[SDL_SCANCODE_RIGHT] == 0 && currentKeyStates[SDL_SCANCODE_LEFT] == 0 &&
+		currentKeyStates[SDL_SCANCODE_X] == 0 && currentKeyStates[SDL_SCANCODE_Z] == 0) pressed = false;
+
+	if (frames % (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ? 5 : 15) == 0)
+	{
+		if (pieces[active].fall())
 		{
 			pieces[active].setColPoints();
-			//pieces.erase(pieces.begin() + 0);
-			pieces[active].active = false;
+
+			DeadTexture dead;
+			dead.texture = pieces[active].getTexture();
+			dead.pos = pieces[active].drawPos();
+			dead.rotation = pieces[active].drawRot();
+			deadTextures.push_back(dead);
+
+			pieces.erase(pieces.begin() + 0);
+
 			spawnPiece();
 		}
 	}
@@ -56,4 +75,7 @@ void PieceManager::render()
 {
 	for (Uint32 i = 0; i < pieces.size(); i++)
 		pieces[i].render();
+
+	for (Uint32 i = 0; i < deadTextures.size(); i++)
+		deadTextures[i].render();
 }

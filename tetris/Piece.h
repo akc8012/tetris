@@ -19,8 +19,13 @@ public:
 	SDL_Rect getCollider(int i);
 	void setColPoints();
 	bool checkColPoints(int yOffset = 0);
+	void move(int dir);
 	void rotate(int dir);
-	bool active;
+	
+	LTexture* getTexture() { return texture; }
+	Vector2<int> getPos() { return pos; }
+	Vector2<int> drawPos() { return Vector2<int>(pos.x + drawOff.x + rotOff[rotation].x, pos.y + drawOff.y + rotOff[rotation].y); }
+	int drawRot() { return ((rotation - 1) % 4) * 90; }
 
 private:
 	Shape shape;

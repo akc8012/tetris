@@ -3,7 +3,6 @@
 Piece::Piece(Shape s, LTexture* t, Vector2<int> _pos, Grid* _grid)
 	: texture(t), shape(s), pos(_pos), grid(_grid)
 {
-	active = true;
 	rotation = DOWN;
 	
 	switch (s)
@@ -28,7 +27,7 @@ void Piece::render()
 	}
 
 	if (texture != NULL)
-		texture->render(pos.x+drawOff.x+rotOff[rotation].x, pos.y+drawOff.y+rotOff[rotation].y, 0, ((rotation-1)%4)*90);
+		texture->render(drawPos().x, drawPos().y, 0, drawRot());
 }
 
 bool Piece::fall()
@@ -41,10 +40,16 @@ bool Piece::fall()
 	return colliding;
 }
 
+void Piece::move(int dir)
+{
+	pos.x += dir*GRID_SIZE;
+}
+
 void Piece::rotate(int dir)
 {
-	rotation = dir;
-	collider->rotate(dir, &drawOff);
+	rotation += dir < 0 ? 3 : dir;
+	rotation %= 4;
+	collider->rotate(rotation, &drawOff);
 }
 
 SDL_Rect Piece::getCollider(int i)

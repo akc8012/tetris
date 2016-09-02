@@ -1,6 +1,5 @@
 #pragma once
 #include "Piece.h"
-#include "Grid.h"
 
 class PieceManager
 {
@@ -17,8 +16,19 @@ private:
 	int active;
 	Grid* grid;
 	Vector2<int> startPos;
-	int dir;
 	bool pressed;
 	LTexture LTex;
 	LTexture OTex;
+
+	struct DeadTexture
+	{
+		LTexture* texture = 0;
+		SDL_Rect* clip = 0;
+		Vector2<int> pos;
+		int rotation;
+
+		void render() { texture->render(pos.x, pos.y, !clip ? 0 : clip, rotation); };
+	};
+
+	std::vector<DeadTexture> deadTextures;
 };

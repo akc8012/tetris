@@ -1,5 +1,51 @@
 #include "Collider.h"
 
+Vector2<int> Collider::calcPos(int i, Vector2<int> pos)
+{
+	Vector2<int> colPos;
+
+	colPos.x = colliders[i].x + pos.x;
+	colPos.y = colliders[i].y + pos.y;
+
+	return colPos;
+}
+
+void Collider::setColPoints(Vector2<int> pos)
+{
+	for (Uint32 i = 0; i < colliders.size(); i++)
+	{
+		for (int w = 0; w < colliders[i].w / GRID_SIZE; w++)
+		{
+			for (int h = 0; h < colliders[i].h / GRID_SIZE; h++)
+			{
+				grid->setGrid(Vector2<int>(calcPos(i, pos).x + (w*GRID_SIZE), calcPos(i, pos).y + (h*GRID_SIZE)));
+			}
+		}
+	}
+
+	grid->printGrid();
+}
+
+bool Collider::checkColPoints(Vector2<int> pos, const Vector2<int>* posOffset)
+{
+	for (Uint32 i = 0; i < colliders.size(); i++)
+	{
+		for (int w = 0; w < colliders[i].w / GRID_SIZE; w++)
+		{
+			for (int h = 0; h < colliders[i].h / GRID_SIZE; h++)
+			{
+				Vector2<int> checkPoint = Vector2<int>(calcPos(i, pos).x + (w*GRID_SIZE) + posOffset->x,
+					calcPos(i, pos).y + (h*GRID_SIZE) + posOffset->y);
+
+				if (grid->checkGrid(checkPoint))
+					return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 void ICollider::rotate(int dir, Vector2<int>* drawOff)
 {
 	colliders.clear();

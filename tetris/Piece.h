@@ -16,8 +16,7 @@ public:
 
 	void render();
 	bool fall();
-	Vector2<int> calcColPos(int i);
-	void setColPoints();
+	void setColPoints() { collider->setColPoints(pos); }
 	void move(int dir);
 	void rotate(int dir);
 	
@@ -28,7 +27,6 @@ public:
 
 private:
 
-	bool checkColPoints(const Vector2<int>* posOffset = 0);
 	Collider* createCollider(Shape s);
 	
 	Shape shape;

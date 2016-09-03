@@ -28,6 +28,8 @@ void Collider::setColPoints(Vector2<int> pos)
 
 bool Collider::checkColPoints(Vector2<int> pos, const Vector2<int>* posOffset)
 {
+	if (posOffset == NULL) posOffset = new Vector2<int>(0, 0);
+	
 	for (Uint32 i = 0; i < colliders.size(); i++)
 	{
 		for (int w = 0; w < colliders[i].w / GRID_SIZE; w++)

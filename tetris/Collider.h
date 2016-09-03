@@ -14,7 +14,7 @@ public:
 
 	Vector2<int> calcPos(int i, Vector2<int> pos);
 	void setColPoints(Vector2<int> pos);
-	bool checkColPoints(Vector2<int> pos, const Vector2<int>* posOffset);
+	bool checkColPoints(Vector2<int> pos, const Vector2<int>* posOffset = 0);
 
 	virtual void rotate(int dir, Vector2<int>* drawOff = NULL) { }
 

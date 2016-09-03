@@ -78,7 +78,15 @@ void Piece::move(int dir)
 
 void Piece::rotate(int dir)
 {
+	int oldRot = rotation;
+	
 	rotation += dir < 0 ? 3 : dir;
 	rotation %= 4;
 	collider->rotate(rotation, &drawOff);
+
+	if (collider->checkColPoints(pos))
+	{
+		rotation = oldRot;
+		collider->rotate(rotation, &drawOff);
+	}
 }

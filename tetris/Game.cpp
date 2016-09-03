@@ -76,6 +76,11 @@ void Game::run()
 	}
 }
 
+void Game::clearRow(int clearY)
+{
+	pieceManager->clearRow(clearY*GRID_SIZE);
+}
+
 void Game::update(int frames)
 {
 	pieceManager->update(frames);

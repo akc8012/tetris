@@ -20,6 +20,7 @@ public:
 	void init();
 	void close();
 	void run();
+	void clearRow(int clearY);
 
 private:
 	static Game* sGame;

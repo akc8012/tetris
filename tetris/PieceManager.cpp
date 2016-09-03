@@ -8,6 +8,8 @@ PieceManager::PieceManager(Grid* _grid)
 	nPiece = spawnPiece();
 	aPiece = spawnPiece();
 	aPiece->moveToStart();
+
+	clearRect = new SDL_Rect{0, 0, 1, 1};
 }
 
 PieceManager::~PieceManager()
@@ -68,11 +70,12 @@ void PieceManager::update(int frames)
 		{
 			aPiece->setColPoints();
 
-			DeadTexture dead;
+			DeadPiece dead;
 			dead.texture = aPiece->getTexture();
 			dead.pos = aPiece->drawPos();
 			dead.rotation = aPiece->drawRot();
-			deadTextures.push_back(dead);
+
+			deadPieces.push_back(dead);
 
 			delete aPiece;
 			aPiece = nPiece;
@@ -84,8 +87,25 @@ void PieceManager::update(int frames)
 
 Piece* PieceManager::spawnPiece()
 {
-	int r = rand() % 7;
-	return new Piece((Piece::Shape)r, textures[r], grid);
+	//int r = rand() % 7;
+	//return new Piece((Piece::Shape)r, textures[r], grid);
+	return new Piece(Piece::I, &ITex, grid);
+}
+
+void PieceManager::clearRow(int clearY)
+{
+	clearRect = new SDL_Rect{ 0, clearY, SCREEN_WIDTH, GRID_SIZE };
+	
+	/*for (Uint32 i = 0; i < deadTexs.size(); i++)
+	{
+		SDL_Rect texRect = { deadTexs[i].pos.x, deadTexs[i].pos.y, deadTexs[i].getWidth(), deadTexs[i].getHeight() };
+		SDL_Rect resultRect;
+		
+		if (SDL_IntersectRect(clearRect, &texRect, &resultRect))
+		{
+			deadTexs[i].texture = &TTex;
+		}
+	}*/
 }
 
 void PieceManager::render()
@@ -93,6 +113,10 @@ void PieceManager::render()
 	aPiece->render();
 	nPiece->render();
 
-	for (Uint32 i = 0; i < deadTextures.size(); i++)
-		deadTextures[i].render();
+	for (Uint32 i = 0; i < deadPieces.size(); i++)
+		deadPieces[i].render();
+
+	SDL_SetRenderDrawBlendMode(gRenderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(gRenderer, 0, 255, 0, 128);
+	SDL_RenderFillRect(gRenderer, clearRect);
 }

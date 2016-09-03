@@ -14,6 +14,9 @@ public:
 
 private:
 	
+	bool checkRows();
+	void clearRow(int clearY);
+
 	bool GRID[GRID_HEIGHT][GRID_WIDTH] =
 	{
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },

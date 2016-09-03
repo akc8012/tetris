@@ -16,9 +16,8 @@ public:
 
 	void render();
 	bool fall();
-	SDL_Rect getCollider(int i);
+	Vector2<int> calcColPos(int i);
 	void setColPoints();
-	bool checkColPoints(int yOffset = 0);
 	void move(int dir);
 	void rotate(int dir);
 	
@@ -28,6 +27,10 @@ public:
 	int drawRot() { return ((rotation - 1) % 4) * 90; }
 
 private:
+
+	bool checkColPoints(const Vector2<int>* posOffset = 0);
+	Collider* createCollider(Shape s);
+	
 	Shape shape;
 	Vector2<int> pos;
 	Vector2<int> drawOff;

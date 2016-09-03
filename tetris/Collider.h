@@ -13,6 +13,11 @@ public:
 		return colliders;
 	}
 
+	SDL_Rect get(int i)
+	{
+		return colliders[i];
+	}
+
 	virtual void rotate(int dir, Vector2<int>* drawOff = NULL) { }
 
 protected:

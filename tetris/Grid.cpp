@@ -15,6 +15,12 @@ bool Grid::checkGrid(Vector2<int> pos)
 	if (pos.y / GRID_SIZE >= GRID_HEIGHT)
 		return true;
 
+	if (pos.x / GRID_SIZE < 2)
+		return true;
+
+	if (pos.x / GRID_SIZE >= GRID_WIDTH + 2)
+		return true;
+
 	return GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2];
 }
 

@@ -79,7 +79,7 @@ void PieceManager::update(int frames)
 
 void PieceManager::spawnPiece()
 {
-	Piece piece(Piece::Z, &ZTex, startPos, grid);
+	Piece piece(Piece::L, &LTex, startPos, grid);
 	//Piece piece2(Piece::O, Vector2<int>(128, 480), grid);
 
 	pieces.push_back(piece);

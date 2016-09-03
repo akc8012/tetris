@@ -1,12 +1,13 @@
 #include "PieceManager.h"
 
-PieceManager::PieceManager(Grid* _grid) : grid(_grid)
+PieceManager::PieceManager(Grid* _grid)
+	: grid(_grid), pressed(false)
 {
-	startPos = Vector2<int>(160, 0);
+	srand((Uint32)time(NULL));
 
-	spawnPiece();
-
-	pressed = false;
+	nPiece = spawnPiece();
+	aPiece = spawnPiece();
+	aPiece->moveToStart();
 }
 
 PieceManager::~PieceManager()
@@ -18,6 +19,9 @@ PieceManager::~PieceManager()
 	STex.free();
 	TTex.free();
 	ZTex.free();
+
+	delete aPiece;
+	delete nPiece;
 }
 
 void PieceManager::loadMedia()
@@ -37,22 +41,22 @@ void PieceManager::update(int frames)
 
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 && !pressed)
 	{
-		pieces[active].move(1);
+		aPiece->move(1);
 		pressed = true;
 	}
 	if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 && !pressed)
 	{
-		pieces[active].move(-1);
+		aPiece->move(-1);
 		pressed = true;
 	}
 	if (currentKeyStates[SDL_SCANCODE_X] != 0 && !pressed)
 	{
-		pieces[active].rotate(1);
+		aPiece->rotate(1);
 		pressed = true;
 	}
 	if (currentKeyStates[SDL_SCANCODE_Z] != 0 && !pressed)
 	{
-		pieces[active].rotate(-1);
+		aPiece->rotate(-1);
 		pressed = true;
 	}
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] == 0 && currentKeyStates[SDL_SCANCODE_LEFT] == 0 &&
@@ -60,37 +64,34 @@ void PieceManager::update(int frames)
 
 	if (frames % (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ? 5 : 15) == 0)
 	{
-		if (pieces[active].fall())
+		if (aPiece->fall())
 		{
-			pieces[active].setColPoints();
+			aPiece->setColPoints();
 
 			DeadTexture dead;
-			dead.texture = pieces[active].getTexture();
-			dead.pos = pieces[active].drawPos();
-			dead.rotation = pieces[active].drawRot();
+			dead.texture = aPiece->getTexture();
+			dead.pos = aPiece->drawPos();
+			dead.rotation = aPiece->drawRot();
 			deadTextures.push_back(dead);
 
-			pieces.erase(pieces.begin() + 0);
-
-			spawnPiece();
+			delete aPiece;
+			aPiece = nPiece;
+			nPiece = spawnPiece();
+			aPiece->moveToStart();
 		}
 	}
 }
 
-void PieceManager::spawnPiece()
+Piece* PieceManager::spawnPiece()
 {
-	Piece piece(Piece::L, &LTex, startPos, grid);
-	//Piece piece2(Piece::O, Vector2<int>(128, 480), grid);
-
-	pieces.push_back(piece);
-	active = pieces.size() - 1;
-	//pieces.push_back(piece2);
+	int r = rand() % 7;
+	return new Piece((Piece::Shape)r, textures[r], grid);
 }
 
 void PieceManager::render()
 {
-	for (Uint32 i = 0; i < pieces.size(); i++)
-		pieces[i].render();
+	aPiece->render();
+	nPiece->render();
 
 	for (Uint32 i = 0; i < deadTextures.size(); i++)
 		deadTextures[i].render();

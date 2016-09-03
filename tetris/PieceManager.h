@@ -9,14 +9,15 @@ public:
 
 	void loadMedia();
 	void update(int frames);
-	void spawnPiece();
 	void render();
 
 private:
-	std::vector<Piece> pieces;
+	Piece* spawnPiece();
+	
+	Piece* aPiece;
+	Piece* nPiece;
 	int active;
 	Grid* grid;
-	Vector2<int> startPos;
 	bool pressed;
 	LTexture ITex;
 	LTexture JTex;
@@ -25,6 +26,8 @@ private:
 	LTexture STex;
 	LTexture TTex;
 	LTexture ZTex;
+
+	LTexture* textures[7] = { &ITex, &JTex, &LTex, &OTex, &STex, &TTex, &ZTex };
 
 	struct DeadTexture
 	{

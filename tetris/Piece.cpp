@@ -1,10 +1,10 @@
 #include "Piece.h"
 
-Piece::Piece(Shape s, LTexture* t, Vector2<int> _pos, Grid* _grid)
-	: texture(t), shape(s), pos(_pos), grid(_grid)
+Piece::Piece(Shape s, LTexture* t, Grid* _grid)
+	: texture(t), shape(s), grid(_grid)
 {
 	rotation = DOWN;
-	
+	pos = Vector2<int>(GRID_SIZE * 15, GRID_SIZE * 13);
 	collider = createCollider(s);
 }
 
@@ -44,6 +44,11 @@ Collider* Piece::createCollider(Shape s)
 	}
 
 	return col;
+}
+
+void Piece::moveToStart()
+{
+	pos = Vector2<int>(160, 0);
 }
 
 void Piece::render()

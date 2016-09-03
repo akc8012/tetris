@@ -12,9 +12,10 @@ public:
 
 	enum Shape { I, J, L, O, S, T, Z };
 
-	Piece(Shape s, LTexture* t, Vector2<int> _pos, Grid* _grid);
+	Piece(Shape s, LTexture* t, Grid* _grid);
 
 	void render();
+	void moveToStart();
 	bool fall();
 	void setColPoints() { collider->setColPoints(pos); }
 	void move(int dir);

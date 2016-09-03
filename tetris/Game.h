@@ -29,29 +29,10 @@ private:
 	Grid* grid;
 	PieceManager* pieceManager;
 	
-	//Load the game's textures
-	LTexture gDotTexture;
-	LTexture gDeadTexture;
-	LTexture gBGTexture;
-	LTexture gReadyTexture;
-	LTexture gPowerTexture;
-
-	LTexture rGhostTexture;
-	LTexture bGhostTexture;
-	LTexture pGhostTexture;
-	LTexture yGhostTexture;
-	LTexture evadeGhostTexture;
-
+	// Load the game's textures
 	LTexture bgTex;
 
 	// Load music and sound effects
-	Mix_Music *gSiren = NULL;
-	Mix_Music *gIntro = NULL;
-	Mix_Music *gEvade = NULL;
-	Mix_Music *gDying = NULL;
-	Mix_Chunk *gPellet0 = NULL;
-	Mix_Chunk *gPellet1 = NULL;
-	Mix_Chunk *eatGhost = NULL;
 	
 	void update(int frames);
 	void render();

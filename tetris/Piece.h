@@ -10,7 +10,7 @@ class Piece
 {
 public:
 
-	enum Shape { I, O, T, S, Z, J, L };
+	enum Shape { I, J, L, O, S, T, Z };
 
 	Piece(Shape s, LTexture* t, Vector2<int> _pos, Grid* _grid);
 

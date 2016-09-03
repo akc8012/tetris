@@ -7,12 +7,32 @@ Piece::Piece(Shape s, LTexture* t, Vector2<int> _pos, Grid* _grid)
 	
 	switch (s)
 	{
+	case I:
+		collider = new ICollider(&drawOff);
+		break;
+
+	case J:
+		collider = new JCollider(&drawOff);
+		break;
+
 	case L:
 		collider = new LCollider(&drawOff);
 		break;
 
 	case O:
 		collider = new OCollider(&drawOff);
+		break;
+
+	case S:
+		collider = new SCollider(&drawOff);
+		break;
+
+	case T:
+		collider = new TCollider(&drawOff);
+		break;
+
+	case Z:
+		collider = new ZCollider(&drawOff);
 		break;
 	}
 }
@@ -26,8 +46,7 @@ void Piece::render()
 		SDL_RenderFillRect(gRenderer, &fillRect);
 	}
 
-	if (texture != NULL)
-		texture->render(drawPos().x, drawPos().y, 0, drawRot());
+	texture->render(drawPos().x, drawPos().y, 0, drawRot());
 }
 
 bool Piece::fall()

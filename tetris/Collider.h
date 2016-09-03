@@ -19,6 +19,28 @@ protected:
 	std::vector<SDL_Rect> colliders;
 };
 
+class ICollider : public Collider
+{
+public:
+	ICollider(Vector2<int>* drawOff)
+	{
+		rotate(DOWN, drawOff);
+	}
+
+	void rotate(int dir, Vector2<int>* drawOff = NULL);
+};
+
+class JCollider : public Collider
+{
+public:
+	JCollider(Vector2<int>* drawOff)
+	{
+		rotate(DOWN, drawOff);
+	}
+
+	void rotate(int dir, Vector2<int>* drawOff = NULL);
+};
+
 class LCollider : public Collider
 {
 public:
@@ -41,4 +63,37 @@ public:
 	}
 
 	void rotate(int dir, Vector2<int>* drawOff = NULL) { }
+};
+
+class SCollider : public Collider
+{
+public:
+	SCollider(Vector2<int>* drawOff)
+	{
+		rotate(DOWN, drawOff);
+	}
+
+	void rotate(int dir, Vector2<int>* drawOff = NULL);
+};
+
+class TCollider : public Collider
+{
+public:
+	TCollider(Vector2<int>* drawOff)
+	{
+		rotate(DOWN, drawOff);
+	}
+
+	void rotate(int dir, Vector2<int>* drawOff = NULL);
+};
+
+class ZCollider : public Collider
+{
+public:
+	ZCollider(Vector2<int>* drawOff)
+	{
+		rotate(DOWN, drawOff);
+	}
+
+	void rotate(int dir, Vector2<int>* drawOff = NULL);
 };

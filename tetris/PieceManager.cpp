@@ -9,10 +9,26 @@ PieceManager::PieceManager(Grid* _grid) : grid(_grid)
 	pressed = false;
 }
 
+PieceManager::~PieceManager()
+{
+	ITex.free();
+	JTex.free();
+	LTex.free();
+	OTex.free();
+	STex.free();
+	TTex.free();
+	ZTex.free();
+}
+
 void PieceManager::loadMedia()
 {
+	ITex.loadFromFile("media/ITex.png");
+	JTex.loadFromFile("media/JTex.png");
 	LTex.loadFromFile("media/LTex.png");
 	OTex.loadFromFile("media/OTex.png");
+	STex.loadFromFile("media/STex.png");
+	TTex.loadFromFile("media/TTex.png");
+	ZTex.loadFromFile("media/ZTex.png");
 }
 
 void PieceManager::update(int frames)
@@ -63,7 +79,7 @@ void PieceManager::update(int frames)
 
 void PieceManager::spawnPiece()
 {
-	Piece piece(Piece::L, &LTex, startPos, grid);
+	Piece piece(Piece::Z, &ZTex, startPos, grid);
 	//Piece piece2(Piece::O, Vector2<int>(128, 480), grid);
 
 	pieces.push_back(piece);

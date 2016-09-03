@@ -5,6 +5,7 @@ class PieceManager
 {
 public:
 	PieceManager(Grid* _grid);
+	~PieceManager();
 
 	void loadMedia();
 	void update(int frames);
@@ -17,8 +18,13 @@ private:
 	Grid* grid;
 	Vector2<int> startPos;
 	bool pressed;
+	LTexture ITex;
+	LTexture JTex;
 	LTexture LTex;
 	LTexture OTex;
+	LTexture STex;
+	LTexture TTex;
+	LTexture ZTex;
 
 	struct DeadTexture
 	{

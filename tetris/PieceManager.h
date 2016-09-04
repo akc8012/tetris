@@ -36,14 +36,12 @@ private:
 	{
 		LTexture* texture = 0;
 		SDL_Rect* clip = 0;
-		Collider* collider;
+		Collider* collider = 0;
 		Vector2<int> pos;
+		Vector2<int> drawPos;
 		int rotation;
 
-		int getWidth()  { return rotation == 0 || rotation == 180 ? texture->getWidth() : texture->getHeight(); }
-		int getHeight() { return rotation == 0 || rotation == 180 ? texture->getHeight() : texture->getWidth(); }
-
-		void render() { texture->render(pos.x, pos.y, !clip ? 0 : clip, rotation); };
+		void render() { texture->render(drawPos.x, drawPos.y, !clip ? 0 : clip, rotation); };
 	};
 
 	std::vector<DeadPiece> deadPieces;

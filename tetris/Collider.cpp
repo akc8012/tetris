@@ -48,6 +48,23 @@ bool Collider::checkColPoints(Vector2<int> pos, const Vector2<int>* posOffset)
 	return false;
 }
 
+bool Collider::checkAgainstRow(int row, Vector2<int> pos)
+{
+	for (Uint32 i = 0; i < colliders.size(); i++)
+	{
+		for (int w = 0; w < colliders[i].w / GRID_SIZE; w++)
+		{
+			for (int h = 0; h < colliders[i].h / GRID_SIZE; h++)
+			{
+				if ((calcPos(i, pos).y + (h*GRID_SIZE)) / GRID_SIZE == row)
+					return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 void ICollider::rotate(int dir, Vector2<int>* drawOff)
 {
 	colliders.clear();

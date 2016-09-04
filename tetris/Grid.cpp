@@ -26,6 +26,11 @@ bool Grid::checkGrid(Vector2<int> pos)
 	return GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2];
 }
 
+bool Grid::checkAgainstRow(int x, int row)
+{
+	return GRID[row][(x / GRID_SIZE) - 2];
+}
+
 void Grid::printGrid()
 {	
 	system("CLS");

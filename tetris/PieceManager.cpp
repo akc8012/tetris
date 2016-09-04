@@ -72,8 +72,10 @@ void PieceManager::update(int frames)
 
 			DeadPiece dead;
 			dead.texture = aPiece->getTexture();
-			dead.pos = aPiece->drawPos();
+			dead.pos = aPiece->getPos();
+			dead.drawPos = aPiece->drawPos();
 			dead.rotation = aPiece->drawRot();
+			dead.collider = new Collider(*aPiece->getCol());
 
 			deadPieces.push_back(dead);
 
@@ -94,18 +96,14 @@ Piece* PieceManager::spawnPiece()
 
 void PieceManager::clearRow(int clearY)
 {
-	clearRect = new SDL_Rect{ 0, clearY, SCREEN_WIDTH, GRID_SIZE };
-	
-	/*for (Uint32 i = 0; i < deadTexs.size(); i++)
+	for (Uint32 i = 0; i < deadPieces.size(); i++)
 	{
-		SDL_Rect texRect = { deadTexs[i].pos.x, deadTexs[i].pos.y, deadTexs[i].getWidth(), deadTexs[i].getHeight() };
-		SDL_Rect resultRect;
-		
-		if (SDL_IntersectRect(clearRect, &texRect, &resultRect))
-		{
-			deadTexs[i].texture = &TTex;
-		}
-	}*/
+		if (deadPieces[i].collider->checkAgainstRow(clearY, deadPieces[i].pos))
+			deadPieces[i].texture = &TTex;
+
+		deadPieces[i].pos.y += GRID_SIZE;
+		deadPieces[i].drawPos.y += GRID_SIZE;
+	}
 }
 
 void PieceManager::render()

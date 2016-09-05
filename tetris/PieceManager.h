@@ -13,7 +13,6 @@ public:
 	void clearRow(int clearY);
 
 private:
-	SDL_Rect* clearRect;
 	
 	Piece* spawnPiece();
 	
@@ -35,13 +34,22 @@ private:
 	struct DeadPiece
 	{
 		LTexture* texture = 0;
-		SDL_Rect* clip = 0;
+		std::vector<SDL_Rect> coverRects;
 		Collider* collider = 0;
 		Vector2<int> pos;
 		Vector2<int> drawPos;
 		int rotation;
 
-		void render() { texture->render(drawPos.x, drawPos.y, !clip ? 0 : clip, rotation); };
+		void render()
+		{
+			texture->render(drawPos.x, drawPos.y, 0, rotation);
+
+			for (Uint32 i = 0; i < coverRects.size(); i++)
+			{
+				SDL_SetRenderDrawColor(gRenderer, 248, 248, 248, 255);
+				SDL_RenderFillRect(gRenderer, &coverRects[i]);
+			}
+		};
 	};
 
 	std::vector<DeadPiece> deadPieces;

@@ -48,8 +48,10 @@ bool Collider::checkColPoints(Vector2<int> pos, const Vector2<int>* posOffset)
 	return false;
 }
 
-bool Collider::checkAgainstRow(int row, Vector2<int> pos)
+std::vector<Vector2<int>> Collider::checkAgainstRow(int row, Vector2<int> pos)
 {
+	std::vector<Vector2<int>> list;
+	
 	for (Uint32 i = 0; i < colliders.size(); i++)
 	{
 		for (int w = 0; w < colliders[i].w / GRID_SIZE; w++)
@@ -57,12 +59,12 @@ bool Collider::checkAgainstRow(int row, Vector2<int> pos)
 			for (int h = 0; h < colliders[i].h / GRID_SIZE; h++)
 			{
 				if ((calcPos(i, pos).y + (h*GRID_SIZE)) / GRID_SIZE == row)
-					return true;
+					list.push_back(Vector2<int>((calcPos(i, pos).x + (w*GRID_SIZE)), (calcPos(i, pos).y + (h*GRID_SIZE))));
 			}
 		}
 	}
 
-	return false;
+	return list;
 }
 
 void ICollider::rotate(int dir, Vector2<int>* drawOff)

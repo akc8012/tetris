@@ -125,6 +125,11 @@ void LTexture::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* cen
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 
+	//If no center point specified, set it to 
+	// our texture's dimensions (before the clip modifies it)
+	if (center == NULL)
+		center = new SDL_Point{ mWidth/2, mHeight/2 };
+
 	//Set clip rendering dimensions
 	if (clip != NULL)
 	{

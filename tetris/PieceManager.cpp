@@ -8,8 +8,6 @@ PieceManager::PieceManager(Grid* _grid)
 	nPiece = spawnPiece();
 	aPiece = spawnPiece();
 	aPiece->moveToStart();
-
-	clearRect = new SDL_Rect{0, 0, 1, 1};
 }
 
 PieceManager::~PieceManager()
@@ -98,23 +96,24 @@ void PieceManager::clearRow(int clearY)
 {
 	for (Uint32 i = 0; i < deadPieces.size(); i++)
 	{
-		if (deadPieces[i].collider->checkAgainstRow(clearY, deadPieces[i].pos))
-			deadPieces[i].texture = &TTex;
+		std::vector<Vector2<int>> covers = deadPieces[i].collider->checkAgainstRow(clearY, deadPieces[i].pos);
+		
+		for (Uint32 j = 0; j < covers.size(); j++)
+		{
+			SDL_Rect cover = { covers[j].x, covers[j].y, 32, 32 };
+			deadPieces[i].coverRects.push_back(cover);
+		}
 
-		deadPieces[i].pos.y += GRID_SIZE;
-		deadPieces[i].drawPos.y += GRID_SIZE;
+		//deadPieces[i].pos.y += GRID_SIZE;
+		//deadPieces[i].drawPos.y += GRID_SIZE;
 	}
 }
 
 void PieceManager::render()
 {
-	aPiece->render();
-	nPiece->render();
-
 	for (Uint32 i = 0; i < deadPieces.size(); i++)
 		deadPieces[i].render();
 
-	SDL_SetRenderDrawBlendMode(gRenderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(gRenderer, 0, 255, 0, 128);
-	SDL_RenderFillRect(gRenderer, clearRect);
+	aPiece->render();
+	nPiece->render();
 }

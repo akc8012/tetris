@@ -33,7 +33,7 @@ bool Grid::checkAgainstRow(int x, int row)
 
 void Grid::printGrid()
 {	
-	/*system("CLS");
+	system("CLS");
 	
 	for (int y = 0; y < SCREEN_HEIGHT; y += GRID_SIZE)
 	{
@@ -43,7 +43,7 @@ void Grid::printGrid()
 		}
 
 		std::cout << std::endl;
-	}*/
+	}
 }
 
 bool Grid::checkRows()

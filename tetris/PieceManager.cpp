@@ -69,11 +69,9 @@ void PieceManager::update(int frames)
 			aPiece->setColPoints();
 
 			DeadPiece dead;
-			dead.texture = aPiece->getTexture();
-			dead.pos = aPiece->getPos();
-			dead.drawPos = aPiece->drawPos();
-			dead.rotation = aPiece->drawRot();
-			dead.collider = new Collider(*aPiece->getCol());
+			dead.setTexture(aPiece->getTexture());
+			dead.setRotation(aPiece->drawRot());
+			dead.setPos(aPiece->drawPos());
 
 			deadPieces.push_back(dead);
 
@@ -87,22 +85,22 @@ void PieceManager::update(int frames)
 
 Piece* PieceManager::spawnPiece()
 {
-	//int r = rand() % 7;
-	//return new Piece((Piece::Shape)r, textures[r], grid);
-	return new Piece(Piece::I, &ITex, grid);
+	int r = rand() % 7;
+	return new Piece((Piece::Shape)r, textures[r], grid);
+	//return new Piece(Piece::I, &ITex, grid);
 }
 
 void PieceManager::clearRow(int clearY)
 {
 	for (Uint32 i = 0; i < deadPieces.size(); i++)
 	{
-		std::vector<Vector2<int>> covers = deadPieces[i].collider->checkAgainstRow(clearY, deadPieces[i].pos);
+		/*std::vector<Vector2<int>> covers = deadPieces[i].collider->checkAgainstRow(clearY, deadPieces[i].pos);
 		
 		for (Uint32 j = 0; j < covers.size(); j++)
 		{
 			SDL_Rect cover = { covers[j].x, covers[j].y, 32, 32 };
 			deadPieces[i].coverRects.push_back(cover);
-		}
+		}*/
 
 		//deadPieces[i].pos.y += GRID_SIZE;
 		//deadPieces[i].drawPos.y += GRID_SIZE;

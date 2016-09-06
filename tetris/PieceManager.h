@@ -31,25 +31,50 @@ private:
 
 	LTexture* textures[7] = { &ITex, &JTex, &LTex, &OTex, &STex, &TTex, &ZTex };
 
-	struct DeadPiece
+	class DeadPiece
 	{
+	private:
 		LTexture* texture = 0;
-		std::vector<SDL_Rect> coverRects;
-		Collider* collider = 0;
 		Vector2<int> pos;
-		Vector2<int> drawPos;
-		int rotation;
+		int rotation = -1;
+
+	public:
+		
+		int getHeight() { return rotation == 0 || rotation == 180 ? texture->getHeight() : texture->getWidth(); }
+		int getWidth() { return rotation == 0 || rotation == 180 ? texture->getWidth() : texture->getHeight(); }
+		
+		void setTexture(LTexture* t) { texture = t; }
+		void setRotation(int rot) { rotation = rot; }
+
+		void setPos(Vector2<int> p)
+		{
+			switch (rotation)
+			{
+			case 90:
+				p.x += (texture->getWidth() + texture->getHeight()) / 2; 
+				p.y -= abs(texture->getWidth() - texture->getHeight()) / 2;
+				break;
+
+			case 180:
+				p.x += texture->getWidth();
+				p.y += texture->getHeight();
+				break;
+
+			case -90:
+				p.x += abs(texture->getWidth() - texture->getHeight()) / 2;
+				p.y += (texture->getWidth() + texture->getHeight()) / 2;
+				break;
+			}
+
+			pos = p;
+		}
 
 		void render()
 		{
-			texture->render(drawPos.x, drawPos.y, 0, rotation);
-
-			for (Uint32 i = 0; i < coverRects.size(); i++)
-			{
-				SDL_SetRenderDrawColor(gRenderer, 248, 248, 248, 255);
-				SDL_RenderFillRect(gRenderer, &coverRects[i]);
-			}
+			SDL_Point center = { 0, 0 };
+			texture->render(pos.x, pos.y, 0, rotation, &center);
 		};
+
 	};
 
 	std::vector<DeadPiece> deadPieces;

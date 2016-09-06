@@ -25,7 +25,6 @@ public:
 	Vector2<int> getPos() { return pos; }
 	Vector2<int> drawPos() { return Vector2<int>(pos.x + drawOff.x + rotOff[rotation].x, pos.y + drawOff.y + rotOff[rotation].y); }
 	int drawRot() { return ((rotation - 1) % 4) * 90; }
-	Collider* getCol() { return collider; }
 
 private:
 

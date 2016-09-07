@@ -74,6 +74,7 @@ void PieceManager::update(int frames)
 			dead.setPos(aPiece->drawPos());
 
 			deadPieces.push_back(dead);
+			std::cout << "Pieces: " << deadPieces.size();
 
 			delete aPiece;
 			aPiece = nPiece;
@@ -87,24 +88,51 @@ Piece* PieceManager::spawnPiece()
 {
 	int r = rand() % 7;
 	return new Piece((Piece::Shape)r, textures[r], grid);
-	//return new Piece(Piece::I, &ITex, grid);
+	//return new Piece(Piece::L, &LTex, grid);
 }
 
 void PieceManager::clearRow(int clearY)
 {
+	SDL_Rect clear = { 0, clearY, GRID_LENGTH, GRID_SIZE };
+	SDL_Rect result;
+
+	SDL_Rect* clip = new SDL_Rect { 0, 0, 64, 32 };
+	
 	for (Uint32 i = 0; i < deadPieces.size(); i++)
 	{
-		/*std::vector<Vector2<int>> covers = deadPieces[i].collider->checkAgainstRow(clearY, deadPieces[i].pos);
-		
-		for (Uint32 j = 0; j < covers.size(); j++)
+		if (SDL_IntersectRect(&clear, &deadPieces[i].getRect(), &result))
 		{
-			SDL_Rect cover = { covers[j].x, covers[j].y, 32, 32 };
-			deadPieces[i].coverRects.push_back(cover);
-		}*/
+			if (result.w == deadPieces[i].getWidth() && result.h == deadPieces[i].getHeight())
+			{
+				deadPieces.erase(deadPieces.begin() + i--);
+				continue;
+			}
 
-		//deadPieces[i].pos.y += GRID_SIZE;
-		//deadPieces[i].drawPos.y += GRID_SIZE;
+			int yDist = abs(clearY - deadPieces[i].getPos().y);
+
+			if (yDist == 0 || yDist == deadPieces[i].getHeight() - 32)
+			{
+				SDL_Rect cover { deadPieces[i].getPos().x, deadPieces[i].getPos().y + yDist, deadPieces[i].getWidth(), 32 };
+				deadPieces[i].pushCoverRect(cover);
+
+				if (yDist == deadPieces[i].getHeight() - 32)
+					deadPieces[i].moveDown();
+			}
+			else
+			{
+				/*DeadPiece newPiece = DeadPiece(deadPieces[i]);
+				
+				SDL_Rect botCover { deadPieces[i].getPos().x, deadPieces[i].getPos().y, deadPieces[i].getWidth(), yDist+32 };
+				SDL_Rect topCover{ deadPieces[i].getPos().x, deadPieces[i].getPos().y+yDist, deadPieces[i].getWidth(), deadPieces[i].getHeight()-yDist };
+				
+				deadPieces[i].pushCoverRect(botCover);
+				newPiece.pushCoverRect(topCover);
+				deadPieces.push_back(newPiece);*/
+			}
+		}
 	}
+
+	std::cout << "Pieces: " << deadPieces.size();
 }
 
 void PieceManager::render()

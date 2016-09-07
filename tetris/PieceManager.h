@@ -30,6 +30,4 @@ private:
 	LTexture ZTex;
 
 	LTexture* textures[7] = { &ITex, &JTex, &LTex, &OTex, &STex, &TTex, &ZTex };
-
-	std::vector<DeadPiece> deadPieces;
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "common.h"
 #include "Vector2.h"
+#include "LTexture.h"
 
 class Grid
 {
@@ -8,17 +9,19 @@ public:
 
 	Grid();
 
-	void setGrid(Vector2<int> pos);
+	void setGrid(Vector2<int> pos, int shape);
 	bool checkGrid(Vector2<int> pos);
-	bool checkAgainstRow(int x, int row);
 	void printGrid();
+	void loadMedia();
+	void render();
 
 private:
 	
 	bool checkRows();
 	void clearRow(int clearY);
+	LTexture JBlockTex;
 
-	bool GRID[GRID_HEIGHT][GRID_WIDTH] =
+	int GRID[GRID_HEIGHT][GRID_WIDTH] =
 	{
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },

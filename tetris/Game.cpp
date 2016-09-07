@@ -21,6 +21,7 @@ bool Game::loadMedia()
 	if (!bgTex.loadFromFile("media/background.png"))
 		return false;
 
+	grid->loadMedia();
 	pieceManager->loadMedia();
 
 	return true;
@@ -89,5 +90,6 @@ void Game::update(int frames)
 void Game::render()
 {
 	bgTex.render(0, 0);
+	grid->render();
 	pieceManager->render();
 }

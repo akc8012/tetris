@@ -18,7 +18,7 @@ void Collider::setColPoints(Vector2<int> pos)
 		{
 			for (int h = 0; h < colliders[i].h / GRID_SIZE; h++)
 			{
-				grid->setGrid(Vector2<int>(calcPos(i, pos).x + (w*GRID_SIZE), calcPos(i, pos).y + (h*GRID_SIZE)));
+				grid->setGrid(Vector2<int>(calcPos(i, pos).x + (w*GRID_SIZE), calcPos(i, pos).y + (h*GRID_SIZE)), shape);
 			}
 		}
 	}

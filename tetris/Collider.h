@@ -21,6 +21,7 @@ public:
 protected:
 	std::vector<SDL_Rect> colliders;
 	Grid* grid;
+	int shape;
 };
 
 class ICollider : public Collider
@@ -29,6 +30,7 @@ public:
 	ICollider(Grid* _grid, Vector2<int>* drawOff) : Collider(_grid)
 	{
 		rotate(DOWN, drawOff);
+		shape = 1;
 	}
 
 	void rotate(int dir, Vector2<int>* drawOff = NULL);
@@ -40,6 +42,7 @@ public:
 	JCollider(Grid* _grid, Vector2<int>* drawOff) : Collider(_grid)
 	{
 		rotate(DOWN, drawOff);
+		shape = 2;
 	}
 
 	void rotate(int dir, Vector2<int>* drawOff = NULL);
@@ -51,6 +54,7 @@ public:
 	LCollider(Grid* _grid, Vector2<int>* drawOff) : Collider(_grid)
 	{
 		rotate(DOWN, drawOff);
+		shape = 3;
 	}
 
 	void rotate(int dir, Vector2<int>* drawOff = NULL);
@@ -61,6 +65,7 @@ class OCollider : public Collider
 public:
 	OCollider(Grid* _grid, Vector2<int>* drawOff) : Collider(_grid)
 	{
+		shape = 4;
 		SDL_Rect meme = { GRID_SIZE, GRID_SIZE, GRID_SIZE * 2, GRID_SIZE * 2 };
 		colliders.push_back(meme);
 		*drawOff = Vector2<int>(32, 32);
@@ -75,6 +80,7 @@ public:
 	SCollider(Grid* _grid, Vector2<int>* drawOff) : Collider(_grid)
 	{
 		rotate(DOWN, drawOff);
+		shape = 5;
 	}
 
 	void rotate(int dir, Vector2<int>* drawOff = NULL);
@@ -86,6 +92,7 @@ public:
 	TCollider(Grid* _grid, Vector2<int>* drawOff) : Collider(_grid)
 	{
 		rotate(DOWN, drawOff);
+		shape = 6;
 	}
 
 	void rotate(int dir, Vector2<int>* drawOff = NULL);
@@ -97,6 +104,7 @@ public:
 	ZCollider(Grid* _grid, Vector2<int>* drawOff) : Collider(_grid)
 	{
 		rotate(DOWN, drawOff);
+		shape = 7;
 	}
 
 	void rotate(int dir, Vector2<int>* drawOff = NULL);

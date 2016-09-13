@@ -18,7 +18,33 @@ void Collider::setColPoints(Vector2<int> pos)
 		{
 			for (int h = 0; h < colliders[i].h / GRID_SIZE; h++)
 			{
-				grid->setGrid(Vector2<int>(calcPos(i, pos).x + (w*GRID_SIZE), calcPos(i, pos).y + (h*GRID_SIZE)), shape);
+				int tempShape = (int)shape;
+				if (shape == I)
+				{
+					switch (w+h)
+					{
+					case 0:
+						tempShape = I;
+						break;
+					case 1:
+						tempShape = I+7;
+						break;
+					case 2:
+						tempShape = I+7;
+						break;
+					case 3:
+						tempShape = I+8;
+						break;
+					}
+				}
+
+				if (shape == T || shape == I)
+				{
+					tempShape *= 10;
+					tempShape += rotation;
+				}
+
+				grid->setGrid(Vector2<int>(calcPos(i, pos).x + (w*GRID_SIZE), calcPos(i, pos).y + (h*GRID_SIZE)), tempShape);
 			}
 		}
 	}
@@ -60,24 +86,28 @@ void ICollider::rotate(int dir, Vector2<int>* drawOff)
 		rect = { GRID_SIZE * 2, 0, GRID_SIZE, GRID_SIZE * 4 };
 		colliders.push_back(rect);
 		if (drawOff) *drawOff = Vector2<int>(16, 48);
+		rotation = LEFT;
 		break;
 
 	case DOWN:
 		rect = { 0, GRID_SIZE * 2, GRID_SIZE * 4, GRID_SIZE };
 		colliders.push_back(rect);
 		if (drawOff) *drawOff = Vector2<int>(0, 64);
+		rotation = DOWN;
 		break;
 
 	case LEFT:
 		rect = { GRID_SIZE, 0, GRID_SIZE, GRID_SIZE * 4 };
 		colliders.push_back(rect);
 		if (drawOff) *drawOff = Vector2<int>(-16, 48);
+		rotation = LEFT;
 		break;
 
 	case UP:
 		rect = { 0, GRID_SIZE, GRID_SIZE * 4, GRID_SIZE };
 		colliders.push_back(rect);
 		if (drawOff) *drawOff = Vector2<int>(0, 32);
+		rotation = DOWN;
 		break;
 	}
 }
@@ -252,6 +282,8 @@ void TCollider::rotate(int dir, Vector2<int>* drawOff)
 		if (drawOff) *drawOff = Vector2<int>(0, 0);
 		break;
 	}
+
+	rotation = dir;
 }
 
 void ZCollider::rotate(int dir, Vector2<int>* drawOff)

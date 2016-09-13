@@ -8,7 +8,15 @@ Grid::Grid()
 
 void Grid::loadMedia()
 {
+	IBlockTex.loadFromFile("media/IBlockTex.png");
 	JBlockTex.loadFromFile("media/JBlockTex.png");
+	LBlockTex.loadFromFile("media/LBlockTex.png");
+	OBlockTex.loadFromFile("media/OBlockTex.png");
+	SBlockTex.loadFromFile("media/SBlockTex.png");
+	TBlockTex.loadFromFile("media/TBlockTex.png");
+	ZBlockTex.loadFromFile("media/ZBlockTex.png");
+	IBlock1Tex.loadFromFile("media/IBlock1Tex.png");
+	IBlock2Tex.loadFromFile("media/IBlock2Tex.png");
 }
 
 void Grid::setGrid(Vector2<int> pos, int shape)
@@ -88,8 +96,18 @@ void Grid::render()
 	{
 		for (int x = 64; x < GRID_LENGTH; x += GRID_SIZE)
 		{
-			if (GRID[y / GRID_SIZE][(x / GRID_SIZE) - 2] != 0)
-				JBlockTex.render(x, y);
+			int block = GRID[y / GRID_SIZE][(x / GRID_SIZE) - 2];
+			
+			if (block != 0 && block < 10)
+				textures[block - 1]->render(x, y);
+
+			else if (block >= 10)
+			{
+				int b = block/10;
+				int r = block-(b*10);
+				
+				textures[b-1]->render(x+rotOff[r].x, y+rotOff[r].y, 0, ((r-1) % 4) * 90);
+			}
 		}
 	}
 }

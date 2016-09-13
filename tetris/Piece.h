@@ -10,8 +10,6 @@ class Piece
 {
 public:
 
-	enum Shape { I, J, L, O, S, T, Z };
-
 	Piece(Shape s, LTexture* t, Grid* _grid);
 
 	void render();

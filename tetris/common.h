@@ -10,6 +10,8 @@ extern SDL_Renderer* gRenderer;
 //Globally used font
 extern TTF_Font *gFont;
 
+enum Shape { I=1, J, L, O, S, T, Z };
+
 // global screen size
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 576

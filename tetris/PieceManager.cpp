@@ -79,8 +79,8 @@ void PieceManager::update(int frames)
 Piece* PieceManager::spawnPiece()
 {
 	int r = rand() % 7;
-	return new Piece((Piece::Shape)r, textures[r], grid);
-	//return new Piece(Piece::I, &ITex, grid);
+	return new Piece((Shape)(r+1), textures[r], grid);
+	//return new Piece(I, &ITex, grid);
 }
 
 void PieceManager::clearRow(int clearY)

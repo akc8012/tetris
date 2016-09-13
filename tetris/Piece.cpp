@@ -73,12 +73,33 @@ bool Piece::fall()
 	return colliding;
 }
 
+void Piece::land()
+{
+	while (!collider->checkColPoints(pos, &Vector2<int>(0, GRID_SIZE)))
+	{
+		pos.y += GRID_SIZE;
+	}
+}
+
 void Piece::move(int dir)
 {
 	bool colliding = collider->checkColPoints(pos, &Vector2<int>(dir*GRID_SIZE, 0));
 
 	if (!colliding)
 		pos.x += dir*GRID_SIZE;
+}
+
+void Piece::setPos(Vector2<int> _pos)
+{
+	_pos.x *= GRID_SIZE;
+	_pos.x += 64;
+	_pos.y *= GRID_SIZE;
+
+	bool colliding = collider->checkColPoints(_pos);
+	bool floorBelow = collider->checkColPoints(_pos, &Vector2<int>(0, GRID_SIZE));
+
+	if (!colliding && floorBelow)
+		pos = _pos;
 }
 
 void Piece::rotate(int dir)

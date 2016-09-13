@@ -3,6 +3,7 @@
 #include "LTexture.h"
 #include "PieceManager.h"
 #include "Grid.h"
+#include "GA.h"
 #include "Vector2.h"
 
 class Game
@@ -29,6 +30,7 @@ private:
 
 	Grid* grid;
 	PieceManager* pieceManager;
+	GA* ga;
 	
 	// Load the game's textures
 	LTexture bgTex;

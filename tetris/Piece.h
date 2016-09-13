@@ -15,8 +15,10 @@ public:
 	void render();
 	void moveToStart();
 	bool fall();
+	void land();
 	void setColPoints() { collider->setColPoints(pos); }
 	void move(int dir);
+	void setPos(Vector2<int> _pos);
 	void rotate(int dir);
 	
 	Vector2<int> drawPos() { return Vector2<int>(pos.x + drawOff.x + rotOff[rotation].x, pos.y + drawOff.y + rotOff[rotation].y); }

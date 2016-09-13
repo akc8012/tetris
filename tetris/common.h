@@ -28,3 +28,5 @@ enum Shape { I=1, J, L, O, S, T, Z };
 #define DOWN 1
 #define LEFT 2
 #define UP 3
+
+#define CHROMO_LENGTH 7

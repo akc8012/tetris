@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	
+	srand((Uint32)time(NULL));
 }
 
 Game::~Game()
@@ -14,6 +14,7 @@ void Game::init()
 {
 	grid = new Grid();
 	pieceManager = new PieceManager(grid);
+	ga = new GA(pieceManager);
 }
 
 bool Game::loadMedia()
@@ -34,6 +35,7 @@ void Game::close()
 
 	delete pieceManager;
 	delete grid;
+	delete ga;
 	delete sGame;
 }
 
@@ -79,11 +81,12 @@ void Game::run()
 
 void Game::clearRow(int clearY)
 {
-	pieceManager->clearRow(clearY*GRID_SIZE);
+	
 }
 
 void Game::update(int frames)
 {
+	ga->epoch();
 	pieceManager->update(frames);
 }
 

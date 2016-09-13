@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="GA.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="LTexture.cpp" />
@@ -136,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="Collider.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="GA.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="LTexture.h" />

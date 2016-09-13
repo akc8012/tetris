@@ -1,10 +1,9 @@
 #include "PieceManager.h"
+#include <bitset>
 
 PieceManager::PieceManager(Grid* _grid)
-	: grid(_grid), pressed(false)
+	: grid(_grid), pressed(false), doFall(false)
 {
-	srand((Uint32)time(NULL));
-
 	nPiece = spawnPiece();
 	aPiece = spawnPiece();
 	aPiece->moveToStart();
@@ -58,11 +57,12 @@ void PieceManager::update(int frames)
 	{
 		aPiece->rotate(-1);
 		pressed = true;
+		doFall = !doFall;
 	}
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] == 0 && currentKeyStates[SDL_SCANCODE_LEFT] == 0 &&
 		currentKeyStates[SDL_SCANCODE_X] == 0 && currentKeyStates[SDL_SCANCODE_Z] == 0) pressed = false;
 
-	if (frames % (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ? 5 : 15) == 0)
+	if (frames % (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ? 5 : 15) == 0 && doFall)
 	{
 		if (aPiece->fall())
 		{
@@ -76,6 +76,39 @@ void PieceManager::update(int frames)
 	}
 }
 
+void PieceManager::moveByChromo(int move, int rot)
+{
+	if (move < 8)
+	{
+		for (int i = 0; i < move; i++)
+			aPiece->move(-1);
+	}
+	else
+	{
+		for (int i = 0; i < move - 8; i++)
+			aPiece->move(1);
+	}
+
+	if (rot < 4)
+	{
+		for (int i = 0; i < rot; i++)
+			aPiece->rotate(-1);
+	}
+	else
+	{
+		for (int i = 0; i < rot - 4; i++)
+			aPiece->rotate(1);
+	}
+
+	aPiece->land();
+	aPiece->setColPoints();
+
+	delete aPiece;
+	aPiece = nPiece;
+	nPiece = spawnPiece();
+	aPiece->moveToStart();
+}
+
 Piece* PieceManager::spawnPiece()
 {
 	int r = rand() % 7;
@@ -83,16 +116,8 @@ Piece* PieceManager::spawnPiece()
 	//return new Piece(I, &ITex, grid);
 }
 
-void PieceManager::clearRow(int clearY)
-{
-	
-}
-
 void PieceManager::render()
 {
-	//for (Uint32 i = 0; i < deadPieces.size(); i++)
-	//	deadPieces[i].render();
-
 	aPiece->render();
 	nPiece->render();
 }

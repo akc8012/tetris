@@ -3,17 +3,6 @@
 #include "Vector2.h"
 #include "LTexture.h"
 
-struct Block
-{
-	Shape shape;
-	int rot;
-
-	void render(LTexture* tex, Vector2<int> pos)
-	{
-		tex->render(pos.x, pos.y, 0, rot);
-	}
-};
-
 class Grid
 {
 public:

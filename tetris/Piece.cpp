@@ -8,6 +8,11 @@ Piece::Piece(Shape s, LTexture* t, Grid* _grid)
 	collider = createCollider(s);
 }
 
+Piece::~Piece()
+{
+	delete collider;
+}
+
 Collider* Piece::createCollider(Shape s)
 {
 	Collider* col = 0;
@@ -87,19 +92,6 @@ void Piece::move(int dir)
 
 	if (!colliding)
 		pos.x += dir*GRID_SIZE;
-}
-
-void Piece::setPos(Vector2<int> _pos)
-{
-	_pos.x *= GRID_SIZE;
-	_pos.x += 64;
-	_pos.y *= GRID_SIZE;
-
-	bool colliding = collider->checkColPoints(_pos);
-	bool floorBelow = collider->checkColPoints(_pos, &Vector2<int>(0, GRID_SIZE));
-
-	if (!colliding && floorBelow)
-		pos = _pos;
 }
 
 void Piece::rotate(int dir)

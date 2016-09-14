@@ -7,6 +7,9 @@ PieceManager::PieceManager(Grid* _grid)
 	nPiece = spawnPiece();
 	aPiece = spawnPiece();
 	aPiece->moveToStart();
+
+	tPiece = new Piece(aPiece->getShape(), textures[(int)aPiece->getShape()-1], grid);
+	tPiece->moveToStart();
 }
 
 PieceManager::~PieceManager()
@@ -21,6 +24,7 @@ PieceManager::~PieceManager()
 
 	delete aPiece;
 	delete nPiece;
+	delete tPiece;
 }
 
 void PieceManager::loadMedia()
@@ -66,7 +70,6 @@ void PieceManager::update(int frames)
 	{
 		if (aPiece->fall())
 		{
-			std::cout << aPiece->getFitness() << std::endl;
 			setPiece();
 		}
 	}
@@ -74,31 +77,35 @@ void PieceManager::update(int frames)
 
 int PieceManager::moveByChromo(int move, int rot)
 {
+	tPiece->moveToStart();
+	
 	if (move < 8)
 	{
 		for (int i = 0; i < move; i++)
-			aPiece->move(-1);
+			tPiece->move(-1);
 	}
 	else
 	{
 		for (int i = 0; i < move - 8; i++)
-			aPiece->move(1);
+			tPiece->move(1);
 	}
 
 	if (rot < 4)
 	{
 		for (int i = 0; i < rot; i++)
-			aPiece->rotate(-1);
+			tPiece->rotate(-1);
 	}
 	else
 	{
 		for (int i = 0; i < rot - 4; i++)
-			aPiece->rotate(1);
+			tPiece->rotate(1);
 	}
 
-	aPiece->land();
-	//setPiece();
-	return aPiece->getFitness();
+	tPiece->land();
+	int fitness = tPiece->getFitness();
+	//std::cout << fitness << std::endl;
+
+	return fitness;
 }
 
 void PieceManager::setPiece()
@@ -109,6 +116,9 @@ void PieceManager::setPiece()
 	aPiece = nPiece;
 	nPiece = spawnPiece();
 	aPiece->moveToStart();
+
+	tPiece = new Piece(aPiece->getShape(), textures[(int)aPiece->getShape() - 1], grid);
+	tPiece->moveToStart();
 }
 
 Piece* PieceManager::spawnPiece()
@@ -122,4 +132,5 @@ void PieceManager::render()
 {
 	aPiece->render();
 	nPiece->render();
+	tPiece->render();
 }

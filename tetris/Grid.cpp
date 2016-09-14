@@ -6,6 +6,19 @@ Grid::Grid()
 
 }
 
+Grid::~Grid()
+{
+	IBlockTex.free();
+	JBlockTex.free();
+	LBlockTex.free();
+	OBlockTex.free();
+	SBlockTex.free();
+	TBlockTex.free();
+	ZBlockTex.free();
+	IBlock1Tex.free();
+	IBlock2Tex.free();
+}
+
 void Grid::loadMedia()
 {
 	IBlockTex.loadFromFile("media/IBlockTex.png");

@@ -20,6 +20,7 @@ private:
 	
 	Piece* aPiece;
 	Piece* nPiece;
+	Piece* tPiece;
 	int active;
 	Grid* grid;
 	bool pressed;

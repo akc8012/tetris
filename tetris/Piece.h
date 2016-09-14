@@ -11,6 +11,7 @@ class Piece
 public:
 
 	Piece(Shape s, LTexture* t, Grid* _grid);
+	~Piece();
 
 	void render();
 	void moveToStart();
@@ -19,11 +20,16 @@ public:
 	void setColPoints() { collider->setColPoints(pos); }
 	int getFitness() { return collider->setTempGetFitness(pos); }
 	void move(int dir);
-	void setPos(Vector2<int> _pos);
 	void rotate(int dir);
 	
 	Vector2<int> drawPos() { return Vector2<int>(pos.x + drawOff.x + rotOff[rotation].x, pos.y + drawOff.y + rotOff[rotation].y); }
 	int drawRot() { return ((rotation - 1) % 4) * 90; }
+
+	Vector2<int> getPos() { return pos; }
+	void setPos(Vector2<int> _pos) { pos = _pos; }
+	int getRot() { return rotation; }
+	void setRot(int _rot) { rotation = _rot; }
+	Shape getShape() { return shape; }
 
 private:
 

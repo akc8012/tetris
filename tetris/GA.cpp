@@ -5,7 +5,7 @@ Chromosome::Chromosome()
 	randomizeChromo();
 }
 
-int Chromosome::arrayToNum(unsigned* input, int start, int end)
+int Chromosome::arrayToNum(int* input, int start, int end)
 {
 	std::stringstream ss;
 
@@ -22,7 +22,7 @@ int Chromosome::arrayToNum(int start, int end)
 	return arrayToNum(&chromo[0], start, end);
 }
 
-unsigned Chromosome::binToDec(unsigned num)
+int Chromosome::binToDec(int num)
 {
 	unsigned res = 0;
 
@@ -34,7 +34,7 @@ unsigned Chromosome::binToDec(unsigned num)
 		num /= 10;
 	}
 
-	return res;
+	return (int)res;
 }
 
 void Chromosome::randomizeChromo()
@@ -45,19 +45,15 @@ void Chromosome::randomizeChromo()
 	}
 }
 
-GA::GA(PieceManager* p) : pieceManager(p)
-{
-	
-}
-
 void GA::epoch()
 {	
-	int move = population[index].arrayToNum(0, 4);
-	int rot = population[index].arrayToNum(4, 7);
+	population[0].randomizeChromo();
 
-	move = population[index].binToDec(move);
-	rot = population[index].binToDec(rot);
+	int move = population[0].arrayToNum(0, 4);
+	int rot = population[0].arrayToNum(4, 7);
+
+	move = population[0].binToDec(move);
+	rot = population[0].binToDec(rot);
 
 	int fitness = pieceManager->moveByChromo(move, rot);
-	index++;
 }

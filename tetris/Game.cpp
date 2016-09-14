@@ -32,10 +32,10 @@ void Game::close()
 {
 	//Free loaded images
 	bgTex.free();
-
+	
+	delete ga;
 	delete pieceManager;
 	delete grid;
-	delete ga;
 	delete sGame;
 }
 
@@ -86,7 +86,7 @@ void Game::clearRow(int clearY)
 
 void Game::update(int frames)
 {
-	//ga->epoch();
+	ga->epoch();
 	pieceManager->update(frames);
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);

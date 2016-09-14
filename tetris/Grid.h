@@ -8,6 +8,7 @@ class Grid
 public:
 
 	Grid();
+	~Grid();
 
 	void setGrid(Vector2<int> pos, int shape);
 	void setTempGrid(Vector2<int> pos, int shape);

@@ -17,6 +17,7 @@ public:
 	bool fall();
 	void land();
 	void setColPoints() { collider->setColPoints(pos); }
+	int getFitness() { return collider->setTempGetFitness(pos); }
 	void move(int dir);
 	void setPos(Vector2<int> _pos);
 	void rotate(int dir);

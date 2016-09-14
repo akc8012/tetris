@@ -2,7 +2,7 @@
 #include <bitset>
 
 PieceManager::PieceManager(Grid* _grid)
-	: grid(_grid), pressed(false), doFall(false)
+	: grid(_grid), pressed(false), doFall(true)
 {
 	nPiece = spawnPiece();
 	aPiece = spawnPiece();
@@ -57,7 +57,7 @@ void PieceManager::update(int frames)
 	{
 		aPiece->rotate(-1);
 		pressed = true;
-		doFall = !doFall;
+		//doFall = !doFall;
 	}
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] == 0 && currentKeyStates[SDL_SCANCODE_LEFT] == 0 &&
 		currentKeyStates[SDL_SCANCODE_X] == 0 && currentKeyStates[SDL_SCANCODE_Z] == 0) pressed = false;
@@ -66,17 +66,13 @@ void PieceManager::update(int frames)
 	{
 		if (aPiece->fall())
 		{
-			aPiece->setColPoints();
-
-			delete aPiece;
-			aPiece = nPiece;
-			nPiece = spawnPiece();
-			aPiece->moveToStart();
+			std::cout << aPiece->getFitness() << std::endl;
+			setPiece();
 		}
 	}
 }
 
-void PieceManager::moveByChromo(int move, int rot)
+int PieceManager::moveByChromo(int move, int rot)
 {
 	if (move < 8)
 	{
@@ -101,6 +97,12 @@ void PieceManager::moveByChromo(int move, int rot)
 	}
 
 	aPiece->land();
+	//setPiece();
+	return aPiece->getFitness();
+}
+
+void PieceManager::setPiece()
+{
 	aPiece->setColPoints();
 
 	delete aPiece;

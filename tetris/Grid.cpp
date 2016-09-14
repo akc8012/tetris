@@ -24,6 +24,64 @@ void Grid::setGrid(Vector2<int> pos, int shape)
 	GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2] = shape;
 }
 
+void Grid::initTempGrid()
+{
+	for (int y = 0; y < GRID_HEIGHT; y++)
+	{
+		for (int x = 0; x < GRID_WIDTH; x++)
+		{
+			TEMP_GRID[y][x] = GRID[y][x];
+		}
+	}
+}
+
+void Grid::setTempGrid(Vector2<int> pos, int shape)
+{
+	if (TEMP_GRID[0][0] == -1)
+		initTempGrid();
+	
+	TEMP_GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2] = shape;
+}
+
+int Grid::getFitClearTemp()
+{	
+	int height = 0;
+	int holes = 0;
+
+	for (int x = 0; x < GRID_WIDTH; x++)
+	{
+		for (int y = 0; y < GRID_HEIGHT; y++)
+		{
+			if (TEMP_GRID[y][x] != 0)
+			{
+				height += GRID_HEIGHT - y;
+				break;
+			}
+		}
+	}
+
+	for (int x = 0; x < GRID_WIDTH; x++)
+	{
+		for (int y = 1; y < GRID_HEIGHT; y++)
+		{
+			if (TEMP_GRID[y][x] == 0 && TEMP_GRID[y-1][x] != 0)
+			{
+				holes++;
+			}
+		}
+	}
+	
+	for (int y = 0; y < GRID_HEIGHT; y++)
+	{
+		for (int x = 0; x < GRID_WIDTH; x++)
+		{
+			TEMP_GRID[y][x] = -1;
+		}
+	}
+	
+	return height+holes;
+}
+
 bool Grid::checkGrid(Vector2<int> pos)
 {
 	if (pos.y / GRID_SIZE >= GRID_HEIGHT)
@@ -41,7 +99,7 @@ bool Grid::checkGrid(Vector2<int> pos)
 
 void Grid::printGrid()
 {	
-	system("CLS");
+	/*system("CLS");
 	
 	for (int y = 0; y < SCREEN_HEIGHT; y += GRID_SIZE)
 	{
@@ -51,7 +109,7 @@ void Grid::printGrid()
 		}
 
 		std::cout << std::endl;
-	}
+	}*/
 }
 
 bool Grid::checkRows()
@@ -108,6 +166,17 @@ void Grid::render()
 				
 				textures[b-1]->render(x+rotOff[r].x, y+rotOff[r].y, 0, ((r-1) % 4) * 90);
 			}
+		}
+	}
+}
+
+void Grid::clearGrid()
+{
+	for (int y = 0; y < GRID_HEIGHT; y++)
+	{
+		for (int x = 0; x < GRID_WIDTH; x++)
+		{
+			GRID[y][x] = 0;
 		}
 	}
 }

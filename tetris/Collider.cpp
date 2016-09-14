@@ -52,6 +52,22 @@ void Collider::setColPoints(Vector2<int> pos)
 	grid->printGrid();
 }
 
+int Collider::setTempGetFitness(Vector2<int> pos)
+{
+	for (Uint32 i = 0; i < colliders.size(); i++)
+	{
+		for (int w = 0; w < colliders[i].w / GRID_SIZE; w++)
+		{
+			for (int h = 0; h < colliders[i].h / GRID_SIZE; h++)
+			{
+				grid->setTempGrid(Vector2<int>(calcPos(i, pos).x + (w*GRID_SIZE), calcPos(i, pos).y + (h*GRID_SIZE)), shape);
+			}
+		}
+	}
+
+	return grid->getFitClearTemp();
+}
+
 bool Collider::checkColPoints(Vector2<int> pos, const Vector2<int>* posOffset)
 {
 	if (posOffset == NULL) posOffset = new Vector2<int>(0, 0);

@@ -1,20 +1,29 @@
 #pragma once
 #include "common.h"
 #include "PieceManager.h"
-#include <sstream>
+
+class Chromosome
+{
+private:
+	unsigned chromo[CHROMO_LENGTH] = { 0 };
+	int arrayToNum(unsigned* input, int start, int end);
+
+public:
+	Chromosome();
+	int arrayToNum(int start, int end);
+	unsigned binToDec(unsigned num);
+	void randomizeChromo();
+};
 
 class GA
 {
 private:
-	unsigned chromo[CHROMO_LENGTH] = {0};
 	PieceManager* pieceManager;
-
-	int arrayToNum(unsigned* input, int start, int endd);
-	unsigned binToDec(unsigned num);
+	Chromosome population[POP_SIZE];
+	int index = 0;
 
 public:
-	GA(PieceManager* p) : pieceManager(p) {}
+	GA(PieceManager* p);
 
-	void randomizeChromo();
 	void epoch();
 };

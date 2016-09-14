@@ -1,10 +1,15 @@
 #include "GA.h"
 
-int GA::arrayToNum(unsigned* input, int start, int endd)
+Chromosome::Chromosome()
+{
+	randomizeChromo();
+}
+
+int Chromosome::arrayToNum(unsigned* input, int start, int end)
 {
 	std::stringstream ss;
 
-	for (int i = start; i < endd; i++)
+	for (int i = start; i < end; i++)
 		ss << input[i];
 
 	int result;
@@ -12,7 +17,12 @@ int GA::arrayToNum(unsigned* input, int start, int endd)
 	return result;
 }
 
-unsigned GA::binToDec(unsigned num)
+int Chromosome::arrayToNum(int start, int end)
+{
+	return arrayToNum(&chromo[0], start, end);
+}
+
+unsigned Chromosome::binToDec(unsigned num)
 {
 	unsigned res = 0;
 
@@ -27,22 +37,27 @@ unsigned GA::binToDec(unsigned num)
 	return res;
 }
 
-void GA::randomizeChromo()
-{
+void Chromosome::randomizeChromo()
+{	
 	for (int i = 0; i < 7; i++)
 	{
 		chromo[i] = rand() % 2;
 	}
 }
 
-void GA::epoch()
+GA::GA(PieceManager* p) : pieceManager(p)
 {
-	randomizeChromo();
-	int move = arrayToNum(&chromo[0], 0, 4);
-	int rot = arrayToNum(&chromo[0], 4, 7);
+	
+}
 
-	move = binToDec(move);
-	rot = binToDec(rot);
+void GA::epoch()
+{	
+	int move = population[index].arrayToNum(0, 4);
+	int rot = population[index].arrayToNum(4, 7);
 
-	pieceManager->moveByChromo(move, rot);
+	move = population[index].binToDec(move);
+	rot = population[index].binToDec(rot);
+
+	int fitness = pieceManager->moveByChromo(move, rot);
+	index++;
 }

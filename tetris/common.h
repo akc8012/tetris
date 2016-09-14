@@ -30,3 +30,4 @@ enum Shape { I=1, J, L, O, S, T, Z };
 #define UP 3
 
 #define CHROMO_LENGTH 7
+#define POP_SIZE 14

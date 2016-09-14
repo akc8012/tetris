@@ -10,12 +10,13 @@ public:
 	void loadMedia();
 	void update(int frames);
 	void render();
-	void moveByChromo(int move, int rot);
+	int moveByChromo(int move, int rot);
 
 private:
 	
 	bool doFall;
 	Piece* spawnPiece();
+	void setPiece();
 	
 	Piece* aPiece;
 	Piece* nPiece;

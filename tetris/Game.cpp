@@ -86,8 +86,14 @@ void Game::clearRow(int clearY)
 
 void Game::update(int frames)
 {
-	ga->epoch();
+	//ga->epoch();
 	pieceManager->update(frames);
+
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+	if (currentKeyStates[SDL_SCANCODE_C] != 0)
+	{
+		grid->clearGrid();
+	}
 }
 
 void Game::render()

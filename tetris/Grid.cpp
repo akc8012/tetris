@@ -58,6 +58,8 @@ void Grid::setTempGrid(Vector2<int> pos, int shape)
 
 int Grid::getFitClearTemp()
 {	
+	checkRows(TEMP_GRID, false);
+
 	int height = 0;
 	int holes = 0;
 
@@ -106,7 +108,7 @@ bool Grid::checkGrid(Vector2<int> pos)
 	if (pos.x / GRID_SIZE >= GRID_WIDTH + 2)
 		return true;
 
-	checkRows();
+	checkRows(GRID);
 	return GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2] != 0;
 }
 
@@ -125,7 +127,7 @@ void Grid::printGrid()
 	}*/
 }
 
-bool Grid::checkRows()
+bool Grid::checkRows(int grid[][GRID_WIDTH], bool sendMsg)
 {
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
@@ -133,32 +135,34 @@ bool Grid::checkRows()
 		
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
-			fullRow = GRID[y][x] != 0;
+			fullRow = grid[y][x] != 0;
 			if (!fullRow) break;
 		}
 
 		if (fullRow)
-			clearRow(y);
+			clearRow(grid, y, sendMsg);
 	}
 
 	return false;
 }
 
-void Grid::clearRow(int clearY)
+void Grid::clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg)
 {
 	for (int y = clearY; y >= 0; y--)
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
 			if (y > 0)
-				GRID[y][x] = GRID[y-1][x];
+				grid[y][x] = grid[y-1][x];
 			else
-				GRID[y][x] = 0;
+				grid[y][x] = 0;
 		}
 	}
 
 	printGrid();
-	Game::game()->clearRow(clearY);
+
+	if (sendMsg)
+		Game::game()->clearRow(clearY);
 }
 
 void Grid::render()

@@ -21,8 +21,8 @@ public:
 
 private:
 	
-	bool checkRows();
-	void clearRow(int clearY);
+	bool checkRows(int grid[][GRID_WIDTH], bool sendMsg = true);
+	void clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg);
 	void initTempGrid();
 
 	LTexture IBlockTex;

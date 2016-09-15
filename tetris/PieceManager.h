@@ -10,7 +10,7 @@ public:
 	void loadMedia();
 	void update(int frames);
 	void render();
-	int moveByChromo(int move, int rot);
+	int moveByChromo(int move, int rot, bool set);
 
 private:
 	

@@ -75,7 +75,7 @@ void PieceManager::update(int frames)
 	}
 }
 
-int PieceManager::moveByChromo(int move, int rot)
+int PieceManager::moveByChromo(int move, int rot, bool set)
 {
 	tPiece->moveToStart();
 	
@@ -103,7 +103,13 @@ int PieceManager::moveByChromo(int move, int rot)
 
 	tPiece->land();
 	int fitness = tPiece->getFitness();
-	//std::cout << fitness << std::endl;
+
+	if (set)
+	{
+		delete aPiece;
+		aPiece = tPiece;
+		setPiece();
+	}
 
 	return fitness;
 }
@@ -123,9 +129,9 @@ void PieceManager::setPiece()
 
 Piece* PieceManager::spawnPiece()
 {
-	int r = rand() % 7;
-	return new Piece((Shape)(r+1), textures[r], grid);
-	//return new Piece(I, &ITex, grid);
+	//int r = rand() % 7;
+	//return new Piece((Shape)(r+1), textures[r], grid);
+	return new Piece(L, &LTex, grid);
 }
 
 void PieceManager::render()

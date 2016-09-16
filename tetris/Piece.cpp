@@ -56,6 +56,12 @@ void Piece::moveToStart()
 	pos = Vector2<int>(160, 0);
 }
 
+void Piece::resetRotation()
+{
+	rotation = DOWN;
+	collider->rotate(rotation, &drawOff);
+}
+
 void Piece::render()
 {
 	for (Uint32 i = 0; i < collider->get().size(); i++)

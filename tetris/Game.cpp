@@ -86,7 +86,16 @@ void Game::clearRow(int clearY)
 
 void Game::update(int frames)
 {
-	ga->epoch();
+	gaTicks++;
+
+	if (gaTicks < 20)
+		ga->epoch();
+	else
+	{
+		ga->finish();
+		gaTicks = 0;
+	}
+
 	pieceManager->update(frames);
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);

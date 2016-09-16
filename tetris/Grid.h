@@ -25,6 +25,7 @@ private:
 	void clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg);
 	void initTempGrid();
 
+	int clearCount = 0;
 	LTexture IBlockTex;
 	LTexture JBlockTex;
 	LTexture LBlockTex;

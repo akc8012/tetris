@@ -70,6 +70,8 @@ void PieceManager::update(int frames)
 	{
 		if (aPiece->fall())
 		{
+			system("CLS");
+			std::cout << aPiece->getFitness() << std::endl;
 			setPiece();
 		}
 	}
@@ -78,17 +80,7 @@ void PieceManager::update(int frames)
 int PieceManager::moveByChromo(int move, int rot, bool set)
 {
 	tPiece->moveToStart();
-	
-	if (move < 8)
-	{
-		for (int i = 0; i < move; i++)
-			tPiece->move(-1);
-	}
-	else
-	{
-		for (int i = 0; i < move - 8; i++)
-			tPiece->move(1);
-	}
+	tPiece->resetRotation();
 
 	if (rot < 4)
 	{
@@ -99,6 +91,17 @@ int PieceManager::moveByChromo(int move, int rot, bool set)
 	{
 		for (int i = 0; i < rot - 4; i++)
 			tPiece->rotate(1);
+	}
+	
+	if (move < 8)
+	{
+		for (int i = 0; i < move; i++)
+			tPiece->move(-1);
+	}
+	else
+	{
+		for (int i = 0; i < move - 8; i++)
+			tPiece->move(1);
 	}
 
 	tPiece->land();
@@ -131,7 +134,7 @@ Piece* PieceManager::spawnPiece()
 {
 	//int r = rand() % 7;
 	//return new Piece((Shape)(r+1), textures[r], grid);
-	return new Piece(L, &LTex, grid);
+	return new Piece(I, &ITex, grid);
 }
 
 void PieceManager::render()

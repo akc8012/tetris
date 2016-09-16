@@ -62,17 +62,27 @@ int Grid::getFitClearTemp()
 
 	int height = 0;
 	int holes = 0;
+	int bumpiness = 0;
+	int highest = 0;
+	int tmpHeights[GRID_WIDTH] = { 0 };
 
-	for (int x = 0; x < GRID_WIDTH; x++)
+	for (int x = 0; x < GRID_WIDTH+1; x++)
 	{
 		for (int y = 0; y < GRID_HEIGHT; y++)
 		{
-			if (TEMP_GRID[y][x] != 0)
+			if (TEMP_GRID[y][x] != 0 && x < GRID_WIDTH)
 			{
-				height += GRID_HEIGHT - y;
+				tmpHeights[x] = GRID_HEIGHT - y;
+				height += tmpHeights[x];
+
+				if (tmpHeights[x] > highest) highest = tmpHeights[x];
+
 				break;
 			}
 		}
+
+		int diff = abs((x != 0 ? tmpHeights[x - 1] : 0) - (x < GRID_WIDTH ? tmpHeights[x] : 0));
+		bumpiness += diff;
 	}
 
 	for (int x = 0; x < GRID_WIDTH; x++)
@@ -93,8 +103,8 @@ int Grid::getFitClearTemp()
 			TEMP_GRID[y][x] = -1;
 		}
 	}
-	
-	return height+holes;
+
+	return height+holes+(bumpiness*0.5)-(clearCount*5);		//-(highest*0.25);
 }
 
 bool Grid::checkGrid(Vector2<int> pos)
@@ -129,6 +139,8 @@ void Grid::printGrid()
 
 bool Grid::checkRows(int grid[][GRID_WIDTH], bool sendMsg)
 {
+	clearCount = 0;
+	
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
 		bool fullRow = true;
@@ -140,7 +152,10 @@ bool Grid::checkRows(int grid[][GRID_WIDTH], bool sendMsg)
 		}
 
 		if (fullRow)
+		{
 			clearRow(grid, y, sendMsg);
+			clearCount++;
+		}
 	}
 
 	return false;

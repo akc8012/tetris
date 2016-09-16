@@ -39,8 +39,10 @@ private:
 	void mate(const Chromosome* mom, const Chromosome* dad, int ndx);
 
 public:
-	GA::GA(PieceManager* p) : pieceManager(p) {}
+	GA::GA(PieceManager* p) : pieceManager(p) { start(); }
 	~GA() {}
 
 	void epoch();
+	void start();
+	void finish();
 };

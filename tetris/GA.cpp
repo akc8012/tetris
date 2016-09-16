@@ -55,29 +55,56 @@ void Chromosome::randomizeChromo()
 	}
 }
 
-void GA::epoch()
-{	
+void GA::start()
+{
+	pop = populationA;
+	buffer = populationB;
+	
 	for (int i = 0; i < POP_SIZE; i++)
 	{
 		pop[i].randomizeChromo();
+		buffer[i].reset();
 	}
-	
-	for (int j = 0; j < 100; j++)
+}
+
+void GA::epoch()
+{	
+	calcFitnessValues();
+	sortByFitness();
+
+	for (int i = 0; i < POP_SIZE - 1; i += 2)
 	{
-		calcFitnessValues();
-		sortByFitness();
-
-		for (int i = 0; i < POP_SIZE - 1; i += 2)
-		{
-			Chromosome* mom = rouletteWheel();
-			Chromosome* dad = rouletteWheel();
-			mate(mom, dad, i);
-		}
-
-		Chromosome* temp = pop;
-		pop = buffer;
-		buffer = temp;
+		Chromosome* mom = rouletteWheel();
+		Chromosome* dad = rouletteWheel();
+		mate(mom, dad, i);
 	}
+
+	int move = pop[0].arrayToNum(0, 4);
+	int rot = pop[0].arrayToNum(4, 7);
+
+	move = pop[0].binToDec(move);
+	rot = pop[0].binToDec(rot);
+	std::cout << pop[0].getFitness() << std::endl;
+
+	pieceManager->moveByChromo(move, rot, false);
+
+	Chromosome* temp = pop;
+	pop = buffer;
+	buffer = temp;
+}
+
+void GA::finish()
+{
+	int move = buffer[0].arrayToNum(0, 4);
+	int rot = buffer[0].arrayToNum(4, 7);
+
+	move = buffer[0].binToDec(move);
+	rot = buffer[0].binToDec(rot);
+	std::cout << buffer[0].getFitness() << std::endl;
+
+	pieceManager->moveByChromo(move, rot, true);
+
+	start();
 }
 
 void GA::calcFitnessValues()

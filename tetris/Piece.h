@@ -15,6 +15,7 @@ public:
 
 	void render();
 	void moveToStart();
+	void resetRotation();
 	bool fall();
 	void land();
 	void setColPoints() { collider->setColPoints(pos); }

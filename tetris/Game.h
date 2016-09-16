@@ -31,6 +31,7 @@ private:
 	Grid* grid;
 	PieceManager* pieceManager;
 	GA* ga;
+	int gaTicks;
 	
 	// Load the game's textures
 	LTexture bgTex;

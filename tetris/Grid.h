@@ -19,12 +19,17 @@ public:
 	void render();
 	void clearGrid();
 	bool isBlinking() { return blinking == Blinking; }
+	bool isFilling() { return filling != NotFilling; }
 
 private:
 	
 	bool checkRows(int grid[][GRID_WIDTH], bool sendMsg = true);
 	void clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg);
 	void initTempGrid();
+	void renderGrid();
+	void renderBlink();
+	void renderFillUp();
+	void renderFillAway();
 
 	int clearCount = 0;
 	int blinkCount = 0;
@@ -33,6 +38,10 @@ private:
 
 	enum BlinkState { Blinking, DoneBlinking, NotBlinking };
 	BlinkState blinking = NotBlinking;
+
+	enum FillState { FillingUp, FillingAway, NotFilling };
+	FillState filling = NotFilling;
+	int fillRow = GRID_HEIGHT;
 
 	LTexture IBlockTex;
 	LTexture JBlockTex;
@@ -43,6 +52,7 @@ private:
 	LTexture ZBlockTex;
 	LTexture IBlock1Tex;
 	LTexture IBlock2Tex;
+	LTexture fillBlockTex;
 
 	LTexture* textures[9] = { &IBlockTex, &JBlockTex, &LBlockTex, &OBlockTex, &SBlockTex, 
 		&TBlockTex, &ZBlockTex, &IBlock1Tex, &IBlock2Tex };

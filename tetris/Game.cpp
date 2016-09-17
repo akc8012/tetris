@@ -86,7 +86,7 @@ void Game::clearRow(int clearY)
 
 void Game::update(int frames)
 {
-	if (grid->isBlinking())
+	if (grid->isBlinking() || grid->isFilling())
 		return;
 	
 	if (enableGAFlag)
@@ -115,5 +115,7 @@ void Game::render()
 {
 	bgTex.render(0, 0);
 	grid->render();
-	pieceManager->render();
+
+	if (!grid->isFilling())
+		pieceManager->render();
 }

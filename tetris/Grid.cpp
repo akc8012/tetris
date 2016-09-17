@@ -17,6 +17,7 @@ Grid::~Grid()
 	ZBlockTex.free();
 	IBlock1Tex.free();
 	IBlock2Tex.free();
+	fillBlockTex.free();
 }
 
 void Grid::loadMedia()
@@ -30,6 +31,7 @@ void Grid::loadMedia()
 	ZBlockTex.loadFromFile("media/ZBlockTex.png");
 	IBlock1Tex.loadFromFile("media/IBlock1Tex.png");
 	IBlock2Tex.loadFromFile("media/IBlock2Tex.png");
+	fillBlockTex.loadFromFile("media/fillBlockTex.png");
 }
 
 void Grid::setGrid(Vector2<int> pos, int shape)
@@ -116,7 +118,12 @@ bool Grid::checkGrid(Vector2<int> pos)
 		return true;
 
 	checkRows(GRID);
-	return GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2] != 0;
+	bool colliding = GRID[pos.y / GRID_SIZE][(pos.x / GRID_SIZE) - 2] != 0;
+
+	if (colliding && pos.y <= 96)
+		filling = FillingUp;
+
+	return colliding;
 }
 
 void Grid::printGrid()
@@ -191,12 +198,25 @@ void Grid::clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg)
 
 void Grid::render()
 {
+	renderGrid();
+
+	if (blinking != NotBlinking)
+		renderBlink();
+
+	if (filling == FillingUp)
+		renderFillUp();
+	if (filling == FillingAway)
+		renderFillAway();
+}
+
+void Grid::renderGrid()
+{
 	for (int y = 0; y < SCREEN_HEIGHT; y += GRID_SIZE)
 	{
 		for (int x = 64; x < GRID_LENGTH; x += GRID_SIZE)
 		{
 			int block = GRID[y / GRID_SIZE][(x / GRID_SIZE) - 2];
-			
+
 			if (block != 0 && block < 10)
 				textures[block - 1]->render(x, y);
 
@@ -209,26 +229,79 @@ void Grid::render()
 			}
 		}
 	}
+}
 
-	if (blinking != NotBlinking)
+void Grid::renderBlink()
+{
+	if (blinkCount % blinkRate <= (blinkRate / 2) && blinking != DoneBlinking)
 	{
-		if (blinkCount % blinkRate <= (blinkRate / 2) && blinking != DoneBlinking)
-		{
-			SDL_Rect fillRect = { 64, rowBlinking, GRID_LENGTH - 64, GRID_SIZE };
-			SDL_SetRenderDrawColor(gRenderer, 165, 162, 165, 255);
-			SDL_RenderFillRect(gRenderer, &fillRect);
-		}
-		else if (blinkCount >= blinkRate*2 || blinking == DoneBlinking)
-		{
-			SDL_Rect fillRect = { 64, rowBlinking, GRID_LENGTH - 64, GRID_SIZE };
-			SDL_SetRenderDrawColor(gRenderer, 248, 248, 248, 255);
-			SDL_RenderFillRect(gRenderer, &fillRect);
-		}
+		SDL_Rect fillRect = { 64, rowBlinking, GRID_LENGTH - 64, GRID_SIZE };
+		SDL_SetRenderDrawColor(gRenderer, 165, 162, 165, 255);
+		SDL_RenderFillRect(gRenderer, &fillRect);
+	}
+	else if (blinkCount >= blinkRate * 2 || blinking == DoneBlinking)
+	{
+		SDL_Rect fillRect = { 64, rowBlinking, GRID_LENGTH - 64, GRID_SIZE };
+		SDL_SetRenderDrawColor(gRenderer, 248, 248, 248, 255);
+		SDL_RenderFillRect(gRenderer, &fillRect);
+	}
 
-		blinkCount++;
+	blinkCount++;
 
-		if (blinkCount > blinkRate*2 + blinkRate - 1)
-			blinking = DoneBlinking;
+	if (blinkCount > blinkRate * 2 + blinkRate - 1)
+		blinking = DoneBlinking;
+}
+
+void Grid::renderFillUp()
+{
+	if (fillRow >= 0)
+	{
+		for (int y = fillRow; y < GRID_HEIGHT; y++)
+		{
+			for (int x = 64; x < GRID_LENGTH; x += GRID_SIZE)
+			{
+				fillBlockTex.render(x, y*GRID_SIZE);
+			}
+		}
+	}
+	else
+	{
+		for (int y = 0; y < SCREEN_HEIGHT; y += GRID_SIZE)
+		{
+			for (int x = 64; x < GRID_LENGTH; x += GRID_SIZE)
+			{
+				fillBlockTex.render(x, y);
+			}
+		}
+	}
+
+	fillRow--;
+
+	if (fillRow < -30)
+	{
+		filling = FillingAway;
+		fillRow = 0;
+		clearGrid();
+	}
+}
+
+void Grid::renderFillAway()
+{
+	for (int y = fillRow; y <= GRID_HEIGHT; y++)
+	{
+		for (int x = 64; x < GRID_LENGTH; x += GRID_SIZE)
+		{
+			fillBlockTex.render(x, abs(y-GRID_HEIGHT)*GRID_SIZE);
+		}
+	}
+
+	fillRow++;
+
+	if (fillRow > GRID_HEIGHT)
+	{
+		filling = NotFilling;
+		fillRow = GRID_HEIGHT;
+		clearGrid();
 	}
 }
 

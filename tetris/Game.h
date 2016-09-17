@@ -34,8 +34,8 @@ private:
 	PieceManager* pieceManager;
 	GA* ga;
 	int gaTicks;
-	bool enableGAFlag = false;
-	bool doBlinksFlag = false;
+	bool enableGAFlag = true;
+	bool doBlinksFlag = true;
 
 	
 	// Load the game's textures

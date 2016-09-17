@@ -22,6 +22,8 @@ public:
 	void close();
 	void run();
 	void clearRow(int clearY);
+	bool enableGA() { return enableGAFlag; }
+	bool doBlinks() { return doBlinksFlag; }
 
 private:
 	static Game* sGame;
@@ -32,6 +34,9 @@ private:
 	PieceManager* pieceManager;
 	GA* ga;
 	int gaTicks;
+	bool enableGAFlag = false;
+	bool doBlinksFlag = false;
+
 	
 	// Load the game's textures
 	LTexture bgTex;

@@ -13,8 +13,6 @@ SDL_Renderer* gRenderer = NULL;
 //Globally used font
 TTF_Font *gFont = NULL;
 
-bool enableGA = false;
-
 bool init()
 {
 	//Initialize SDL

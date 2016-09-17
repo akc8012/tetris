@@ -160,7 +160,7 @@ bool Grid::checkRows(int grid[][GRID_WIDTH], bool sendMsg)
 
 void Grid::clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg)
 {
-	if (sendMsg && blinking != DoneBlinking)
+	if (sendMsg && blinking != DoneBlinking && Game::game()->doBlinks())
 	{
 		rowBlinking = clearY*GRID_SIZE;
 		blinking = Blinking;

@@ -89,7 +89,7 @@ void Game::update(int frames)
 	if (grid->isBlinking())
 		return;
 	
-	if (enableGA)
+	if (enableGAFlag)
 	{
 		gaTicks++;
 

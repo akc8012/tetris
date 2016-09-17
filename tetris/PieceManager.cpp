@@ -1,5 +1,5 @@
 #include "PieceManager.h"
-#include <bitset>
+#include "Game.h"
 
 PieceManager::PieceManager(Grid* _grid)
 	: grid(_grid), pressed(false), doFall(true)
@@ -43,7 +43,7 @@ void PieceManager::update(int frames)
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	bool speedKey = false;
 	
-	if (!enableGA)
+	if (!Game::game()->enableGA())
 	{
 		if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 && !pressed)
 		{
@@ -136,16 +136,22 @@ void PieceManager::setPiece()
 
 Piece* PieceManager::spawnPiece()
 {
-	//int r = rand() % 7;
-	//return new Piece((Shape)(r+1), textures[r], grid);
-	return new Piece(I, &ITex, grid);
+	int r = rand() % 7;
+	return new Piece((Shape)(r+1), textures[r], grid);
+	//return new Piece(I, &ITex, grid);
 }
 
 void PieceManager::render()
 {
+	if (Game::game()->enableGA() && !grid->isBlinking())
+	{
+		tPiece->setToBlue(true);
+		tPiece->render();
+
+		aPiece->setToBlue(false);
+		nPiece->setToBlue(false);
+	}
+	
 	aPiece->render();
 	nPiece->render();
-
-	if (enableGA)
-		tPiece->render();
 }

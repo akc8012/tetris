@@ -31,6 +31,7 @@ public:
 	int getRot() { return rotation; }
 	void setRot(int _rot) { rotation = _rot; }
 	Shape getShape() { return shape; }
+	void setToBlue(bool set) { set ? texture->setColor(0, 255, 255) : texture->setColor(255, 255, 255); };
 
 private:
 

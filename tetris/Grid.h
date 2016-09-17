@@ -29,7 +29,7 @@ private:
 	int clearCount = 0;
 	int blinkCount = 0;
 	int rowBlinking = -1;
-	const int blinkRate = 26;
+	const int blinkRate = 20;
 
 	enum BlinkState { Blinking, DoneBlinking, NotBlinking };
 	BlinkState blinking = NotBlinking;

@@ -18,7 +18,7 @@ public:
 	void loadMedia();
 	void render();
 	void clearGrid();
-	bool isBlinking() { return blinking; }
+	bool isBlinking() { return blinking == Blinking; }
 
 private:
 	
@@ -27,11 +27,13 @@ private:
 	void initTempGrid();
 
 	int clearCount = 0;
-	int blinkCount = -1;
-	int blinkRate = 26;
-	bool blinking = false;
-	bool doneBlinking = false;
-	int rowBlinking;
+	int blinkCount = 0;
+	int rowBlinking = -1;
+	const int blinkRate = 26;
+
+	enum BlinkState { Blinking, DoneBlinking, NotBlinking };
+	BlinkState blinking = NotBlinking;
+
 	LTexture IBlockTex;
 	LTexture JBlockTex;
 	LTexture LBlockTex;

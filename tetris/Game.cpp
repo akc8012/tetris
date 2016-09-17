@@ -86,6 +86,9 @@ void Game::clearRow(int clearY)
 
 void Game::update(int frames)
 {
+	if (grid->isBlinking())
+		return;
+	
 	if (enableGA)
 	{
 		gaTicks++;

@@ -160,10 +160,10 @@ bool Grid::checkRows(int grid[][GRID_WIDTH], bool sendMsg)
 
 void Grid::clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg)
 {
-	if (sendMsg && !doneBlinking)
+	if (sendMsg && blinking != DoneBlinking)
 	{
 		rowBlinking = clearY*GRID_SIZE;
-		blinking = true;
+		blinking = Blinking;
 		return;
 	}
 	
@@ -184,7 +184,8 @@ void Grid::clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg)
 	{
 		Game::game()->clearRow(clearY);
 		blinkCount = 0;
-		blinking = true;
+		blinking = NotBlinking;
+		rowBlinking = -1;
 	}
 }
 
@@ -209,28 +210,25 @@ void Grid::render()
 		}
 	}
 
-	if (blinking)
+	if (blinking != NotBlinking)
 	{
-		if (blinkCount % blinkRate <= (blinkRate / 2))
+		if (blinkCount % blinkRate <= (blinkRate / 2) && blinking != DoneBlinking)
 		{
 			SDL_Rect fillRect = { 64, rowBlinking, GRID_LENGTH - 64, GRID_SIZE };
 			SDL_SetRenderDrawColor(gRenderer, 165, 162, 165, 255);
 			SDL_RenderFillRect(gRenderer, &fillRect);
 		}
-		else if (blinkCount >= blinkRate*2)
+		else if (blinkCount >= blinkRate*2 || blinking == DoneBlinking)
 		{
 			SDL_Rect fillRect = { 64, rowBlinking, GRID_LENGTH - 64, GRID_SIZE };
-			SDL_SetRenderDrawColor(gRenderer, 255, 251, 255, 255);
+			SDL_SetRenderDrawColor(gRenderer, 248, 248, 248, 255);
 			SDL_RenderFillRect(gRenderer, &fillRect);
 		}
 
 		blinkCount++;
 
-		if (blinkCount > blinkRate*2 + (blinkRate/2))
-		{
-			blinking = false;
-			doneBlinking = true;
-		}
+		if (blinkCount > blinkRate*2 + blinkRate - 1)
+			blinking = DoneBlinking;
 	}
 }
 

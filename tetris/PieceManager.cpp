@@ -41,37 +41,41 @@ void PieceManager::loadMedia()
 void PieceManager::update(int frames)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+	bool speedKey = false;
+	
+	if (!enableGA)
+	{
+		if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 && !pressed)
+		{
+			aPiece->move(1);
+			pressed = true;
+		}
+		if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 && !pressed)
+		{
+			aPiece->move(-1);
+			pressed = true;
+		}
+		if (currentKeyStates[SDL_SCANCODE_X] != 0 && !pressed)
+		{
+			aPiece->rotate(1);
+			pressed = true;
+		}
+		if (currentKeyStates[SDL_SCANCODE_Z] != 0 && !pressed)
+		{
+			aPiece->rotate(-1);
+			pressed = true;
+			//doFall = !doFall;
+		}
+		if (currentKeyStates[SDL_SCANCODE_RIGHT] == 0 && currentKeyStates[SDL_SCANCODE_LEFT] == 0 &&
+			currentKeyStates[SDL_SCANCODE_X] == 0 && currentKeyStates[SDL_SCANCODE_Z] == 0) pressed = false;
 
-	if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 && !pressed)
-	{
-		aPiece->move(1);
-		pressed = true;
+		speedKey = currentKeyStates[SDL_SCANCODE_DOWN] != 0;
 	}
-	if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 && !pressed)
-	{
-		aPiece->move(-1);
-		pressed = true;
-	}
-	if (currentKeyStates[SDL_SCANCODE_X] != 0 && !pressed)
-	{
-		aPiece->rotate(1);
-		pressed = true;
-	}
-	if (currentKeyStates[SDL_SCANCODE_Z] != 0 && !pressed)
-	{
-		aPiece->rotate(-1);
-		pressed = true;
-		//doFall = !doFall;
-	}
-	if (currentKeyStates[SDL_SCANCODE_RIGHT] == 0 && currentKeyStates[SDL_SCANCODE_LEFT] == 0 &&
-		currentKeyStates[SDL_SCANCODE_X] == 0 && currentKeyStates[SDL_SCANCODE_Z] == 0) pressed = false;
 
-	if (frames % (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ? 5 : 15) == 0 && doFall)
+	if (frames % (speedKey ? 5 : 15) == 0 && doFall)
 	{
 		if (aPiece->fall())
 		{
-			system("CLS");
-			std::cout << aPiece->getFitness() << std::endl;
 			setPiece();
 		}
 	}
@@ -141,5 +145,7 @@ void PieceManager::render()
 {
 	aPiece->render();
 	nPiece->render();
-	tPiece->render();
+
+	if (enableGA)
+		tPiece->render();
 }

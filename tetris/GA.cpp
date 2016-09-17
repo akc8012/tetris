@@ -37,14 +37,16 @@ int Chromosome::binToDec(int num)
 	return (int)res;
 }
 
-void Chromosome::reset()
+void Chromosome::reset(bool onlyFitness)
 {
+	fitness = -1;
+
+	if (onlyFitness) return;
+	
 	for (int i = 0; i < CHROMO_LENGTH; i++)
 	{
 		chromo[i] = -1;
 	}
-
-	fitness = -1;
 }
 
 void Chromosome::randomizeChromo()
@@ -111,6 +113,8 @@ void GA::calcFitnessValues()
 {
 	for (int i = 0; i < POP_SIZE; i++)
 	{
+		mutate(i);
+		
 		int move = pop[i].arrayToNum(0, 4);
 		int rot = pop[i].arrayToNum(4, 7);
 
@@ -168,9 +172,18 @@ void GA::mate(const Chromosome* mom, const Chromosome* dad, int ndx)
 {
 	buffer[ndx].reset();
 	buffer[ndx+1].reset();
+
+	double r = rand() % 10;
+	r *= 0.1;
 	
-	//buffer[ndx] = *mom;
-	//buffer[ndx+1] = *dad;
+	if (r >= CROSSOVER_RATE)
+	{
+		buffer[ndx] = *mom;
+		buffer[ndx].reset(true);
+		buffer[ndx+1] = *dad;
+		buffer[ndx+1].reset(true);
+		return;
+	}
 
 	int point = rand() % CHROMO_LENGTH;
 
@@ -185,4 +198,16 @@ void GA::mate(const Chromosome* mom, const Chromosome* dad, int ndx)
 		buffer[ndx].setChromo(i, dad->getChromo(i));
 		buffer[ndx+1].setChromo(i, mom->getChromo(i));
 	}
+}
+
+void GA::mutate(int ndx)
+{
+	double r = rand() % 1000;
+	r *= 0.001;
+
+	if (r >= MUTATION_RATE)
+		return;
+
+	int point = rand() % CHROMO_LENGTH;
+	pop[ndx].setChromo(point, !pop[ndx].getChromo(point));
 }

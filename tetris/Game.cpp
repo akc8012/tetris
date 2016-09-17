@@ -86,14 +86,17 @@ void Game::clearRow(int clearY)
 
 void Game::update(int frames)
 {
-	gaTicks++;
-
-	if (gaTicks < 20)
-		ga->epoch();
-	else
+	if (enableGA)
 	{
-		ga->finish();
-		gaTicks = 0;
+		gaTicks++;
+
+		if (gaTicks < 20)
+			ga->epoch();
+		else
+		{
+			ga->finish();
+			gaTicks = 0;
+		}
 	}
 
 	pieceManager->update(frames);

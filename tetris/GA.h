@@ -2,6 +2,11 @@
 #include "common.h"
 #include "PieceManager.h"
 
+#define CHROMO_LENGTH 7
+#define POP_SIZE 14
+#define CROSSOVER_RATE 0.7
+#define MUTATION_RATE 0.001
+
 class Chromosome
 {
 private:
@@ -19,7 +24,7 @@ public:
 	void setFitness(int _fitness) { fitness = _fitness; }
 	void setChromo(int ndx, int val) { chromo[ndx] = val; }
 	int getChromo(int ndx) const { return chromo[ndx]; }
-	void reset();
+	void reset(bool onlyFitness = false);
 };
 
 class GA
@@ -37,6 +42,7 @@ private:
 	int calcTotalFitness();
 	Chromosome* rouletteWheel();
 	void mate(const Chromosome* mom, const Chromosome* dad, int ndx);
+	void mutate(int ndx);
 
 public:
 	GA::GA(PieceManager* p) : pieceManager(p) { start(); }

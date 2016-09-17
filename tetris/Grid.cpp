@@ -63,7 +63,6 @@ int Grid::getFitClearTemp()
 	int height = 0;
 	int holes = 0;
 	int bumpiness = 0;
-	int highest = 0;
 	int tmpHeights[GRID_WIDTH] = { 0 };
 
 	for (int x = 0; x < GRID_WIDTH+1; x++)
@@ -74,8 +73,6 @@ int Grid::getFitClearTemp()
 			{
 				tmpHeights[x] = GRID_HEIGHT - y;
 				height += tmpHeights[x];
-
-				if (tmpHeights[x] > highest) highest = tmpHeights[x];
 
 				break;
 			}
@@ -104,7 +101,7 @@ int Grid::getFitClearTemp()
 		}
 	}
 
-	return height+holes+(bumpiness*0.5)-(clearCount*5);		//-(highest*0.25);
+	return int(height+holes+(bumpiness*0.5)-(clearCount*5));
 }
 
 bool Grid::checkGrid(Vector2<int> pos)
@@ -163,6 +160,13 @@ bool Grid::checkRows(int grid[][GRID_WIDTH], bool sendMsg)
 
 void Grid::clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg)
 {
+	if (sendMsg && !doneBlinking)
+	{
+		rowBlinking = clearY*GRID_SIZE;
+		blinking = true;
+		return;
+	}
+	
 	for (int y = clearY; y >= 0; y--)
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
@@ -177,7 +181,11 @@ void Grid::clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg)
 	printGrid();
 
 	if (sendMsg)
+	{
 		Game::game()->clearRow(clearY);
+		blinkCount = 0;
+		blinking = true;
+	}
 }
 
 void Grid::render()
@@ -193,11 +201,35 @@ void Grid::render()
 
 			else if (block >= 10)
 			{
-				int b = block/10;
-				int r = block-(b*10);
-				
-				textures[b-1]->render(x+rotOff[r].x, y+rotOff[r].y, 0, ((r-1) % 4) * 90);
+				int b = block / 10;
+				int r = block - (b * 10);
+
+				textures[b - 1]->render(x + rotOff[r].x, y + rotOff[r].y, 0, ((r - 1) % 4) * 90);
 			}
+		}
+	}
+
+	if (blinking)
+	{
+		if (blinkCount % blinkRate <= (blinkRate / 2))
+		{
+			SDL_Rect fillRect = { 64, rowBlinking, GRID_LENGTH - 64, GRID_SIZE };
+			SDL_SetRenderDrawColor(gRenderer, 165, 162, 165, 255);
+			SDL_RenderFillRect(gRenderer, &fillRect);
+		}
+		else if (blinkCount >= blinkRate*2)
+		{
+			SDL_Rect fillRect = { 64, rowBlinking, GRID_LENGTH - 64, GRID_SIZE };
+			SDL_SetRenderDrawColor(gRenderer, 255, 251, 255, 255);
+			SDL_RenderFillRect(gRenderer, &fillRect);
+		}
+
+		blinkCount++;
+
+		if (blinkCount > blinkRate*2 + (blinkRate/2))
+		{
+			blinking = false;
+			doneBlinking = true;
 		}
 	}
 }

@@ -11,12 +11,14 @@ public:
 	void update(int frames);
 	void render();
 	int moveByChromo(int move, int rot, bool set);
+	bool onlyLines() { return onlyLinesFlag; }
+	void toggleOnlyLines() { onlyLinesFlag = !onlyLinesFlag; }
 
 private:
 	
-	bool doFall;
 	Piece* spawnPiece();
 	void setPiece();
+	bool onlyLinesFlag;
 	
 	Piece* aPiece;
 	Piece* nPiece;

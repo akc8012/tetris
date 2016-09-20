@@ -2,7 +2,7 @@
 #include "Game.h"
 
 PieceManager::PieceManager(Grid* _grid)
-	: grid(_grid), pressed(false), doFall(true)
+	: grid(_grid), pressed(false), onlyLinesFlag(true)
 {
 	nPiece = spawnPiece();
 	aPiece = spawnPiece();
@@ -64,7 +64,6 @@ void PieceManager::update(int frames)
 		{
 			aPiece->rotate(-1);
 			pressed = true;
-			//doFall = !doFall;
 		}
 		if (currentKeyStates[SDL_SCANCODE_RIGHT] == 0 && currentKeyStates[SDL_SCANCODE_LEFT] == 0 &&
 			currentKeyStates[SDL_SCANCODE_X] == 0 && currentKeyStates[SDL_SCANCODE_Z] == 0) pressed = false;
@@ -72,7 +71,7 @@ void PieceManager::update(int frames)
 		speedKey = currentKeyStates[SDL_SCANCODE_DOWN] != 0;
 	}
 
-	if (frames % (speedKey ? 5 : 15) == 0 && doFall)
+	if (frames % (speedKey ? 5 : 15) == 0)
 	{
 		if (aPiece->fall())
 		{
@@ -136,9 +135,12 @@ void PieceManager::setPiece()
 
 Piece* PieceManager::spawnPiece()
 {
-	int r = rand() % 7;
-	return new Piece((Shape)(r+1), textures[r], grid);
-	//return new Piece(I, &ITex, grid);
+	if (!onlyLinesFlag)
+	{
+		int r = rand() % 7;
+		return new Piece((Shape)(r + 1), textures[r], grid);
+	}
+	else return new Piece(I, &ITex, grid);
 }
 
 void PieceManager::render()

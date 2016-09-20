@@ -189,7 +189,6 @@ void Grid::clearRow(int grid[][GRID_WIDTH], int clearY, bool sendMsg)
 
 	if (sendMsg)
 	{
-		Game::game()->clearRow(clearY);
 		blinkCount = 0;
 		blinking = NotBlinking;
 		rowBlinking = -1;

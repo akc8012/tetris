@@ -4,6 +4,7 @@
 #include "PieceManager.h"
 #include "Grid.h"
 #include "GA.h"
+#include "Button.h"
 #include "Vector2.h"
 
 class Game
@@ -21,9 +22,14 @@ public:
 	void init();
 	void close();
 	void run();
-	void clearRow(int clearY);
+	void clearGrid();
 	bool enableGA() { return enableGAFlag; }
 	bool doBlinks() { return doBlinksFlag; }
+	bool onlyLines() { return pieceManager->onlyLines(); }
+
+	void toggleGA() { enableGAFlag = !enableGAFlag; }
+	void toggleBlinks() { doBlinksFlag = !doBlinksFlag; }
+	void toggleOnlyLines() { pieceManager->toggleOnlyLines(); }
 
 private:
 	static Game* sGame;
@@ -33,6 +39,10 @@ private:
 	Grid* grid;
 	PieceManager* pieceManager;
 	GA* ga;
+	Button* button0;
+	Button* button1;
+	Button* button2;
+	Button* button3;
 	int gaTicks;
 	bool enableGAFlag = true;
 	bool doBlinksFlag = true;

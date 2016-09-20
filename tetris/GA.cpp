@@ -86,7 +86,6 @@ void GA::epoch()
 
 	move = pop[0].binToDec(move);
 	rot = pop[0].binToDec(rot);
-	std::cout << pop[0].getFitness() << std::endl;
 
 	pieceManager->moveByChromo(move, rot, false);
 
@@ -102,7 +101,6 @@ void GA::finish()
 
 	move = buffer[0].binToDec(move);
 	rot = buffer[0].binToDec(rot);
-	std::cout << buffer[0].getFitness() << std::endl;
 
 	pieceManager->moveByChromo(move, rot, true);
 
